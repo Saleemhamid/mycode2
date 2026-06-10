@@ -462,104 +462,91 @@
     </div>
 
     <script>
-        // المتغيرات العالمية لحفظ الصور كـ Base64 لنقلها عبر الرابط
-        let headerBase64 = "";
-        let userBase64 = "";
-
-        // فحص قراءة البيانات الممررة عبر الرابط عند فتح الجوال
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
+        // دالة لعرض البيانات المخزنة فوراً عند فتح الصفحة من الجوال أو إعادة تحميلها
+        function loadStoredData() {
+            const isMobileView = window.location.href.includes('view=page3');
             
-            if (urlParams.get('view') === 'page3') {
+            // جلب البيانات من ذاكرة المتصفح الثابتة (localStorage)
+            const storedData = localStorage.getItem('certData');
+            const savedHeader = localStorage.getItem('savedHeaderImg');
+            const savedUser = localStorage.getItem('savedUserImg');
+
+            if (storedData) {
+                const data = JSON.parse(storedData);
+
+                // تعبئة حقول المعاينة في الصفحة الثالثة (للجوال والكمبيوتر)
+                document.getElementById('vCertNo').innerText = data.certNo || '';
+                document.getElementById('vIssueDate').innerText = data.cIssueDate || '';
+                document.getElementById('vExpiryDate').innerText = data.cExpiryDate || '';
+                document.getElementById('vName').innerText = data.cName || '';
+                document.getElementById('vIdNo').innerText = data.cIdNo || '';
+                document.getElementById('vGender').innerText = data.cGender || '';
+                document.getElementById('vNat').innerText = data.cNat || '';
+                document.getElementById('vJob').innerText = data.cJob || '';
+                document.getElementById('vProg').innerText = data.cProg || '';
+                document.getElementById('vProgExp').innerText = data.cProgExp || '';
+                document.getElementById('vFacName').innerText = data.cFacName || '';
+                document.getElementById('vFacLic').innerText = data.cFacLic || '';
+
+                // تعبئة حقول الصفحة الأولى للكمبيوتر أيضاً
+                document.getElementById('lCertNo').innerText = data.certNo || '';
+                document.getElementById('lCertPlace').innerText = data.cPlace || '';
+                document.getElementById('lExpiryDate').innerText = data.cExpiryDate || '';
+                document.getElementById('lName').innerText = data.cName || '';
+                document.getElementById('lIdNo').innerText = data.cIdNo || '';
+                document.getElementById('lGender').innerText = data.cGender || '';
+                document.getElementById('lNat').innerText = data.cNat || '';
+                document.getElementById('lJob').innerText = data.cJob || '';
+            }
+
+            if (savedHeader) {
+                document.getElementById('outHeaderImg1').src = savedHeader;
+                document.getElementById('outHeaderImg3').src = savedHeader;
+            }
+            if (savedUser) {
+                document.getElementById('outUserImg1').src = savedUser;
+                document.getElementById('outUserImg3').src = savedUser;
+            }
+
+            // تطبيق وضع الجوال إذا كان الرابط ممسوحاً بالكيو آر
+            if (isMobileView) {
                 document.getElementById('inputFormContainer').style.display = 'none';
                 document.getElementById('previewWrapper').style.display = 'block';
                 document.getElementById('page1').style.display = 'none';
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
-
-                // استرجاع البيانات النصية وعرضها في الجوال فوراً
-                document.getElementById('vCertNo').innerText = urlParams.get('cNo') || '';
-                document.getElementById('vIssueDate').innerText = urlParams.get('cIsDate') || '';
-                document.getElementById('vExpiryDate').innerText = urlParams.get('cExpDate') || '';
-                document.getElementById('vName').innerText = urlParams.get('cNm') || '';
-                document.getElementById('vIdNo').innerText = urlParams.get('cId') || '';
-                document.getElementById('vGender').innerText = urlParams.get('cGnd') || '';
-                document.getElementById('vNat').innerText = urlParams.get('cNt') || '';
-                document.getElementById('vJob').innerText = urlParams.get('cJb') || '';
-                document.getElementById('vProg').innerText = urlParams.get('cPrg') || '';
-                document.getElementById('vProgExp').innerText = urlParams.get('cPrgExp') || '';
-                document.getElementById('vFacName').innerText = urlParams.get('cFcNm') || '';
-                document.getElementById('vFacLic').innerText = urlParams.get('cFcLc') || '';
-
-                // استرجاع صور الشعار والعامل المخزنة في الذاكرة المحلية (SessionStorage) لتخطي حجم الرابط
-                const savedHeader = sessionStorage.getItem('savedHeaderImg');
-                const savedUser = sessionStorage.getItem('savedUserImg');
-                if(savedHeader) document.getElementById('outHeaderImg3').src = savedHeader;
-                if(savedUser) document.getElementById('outUserImg3').src = savedUser;
             }
-        });
+        }
+
+        // تشغيل الفحص التلقائي بمجرد تحميل الصفحة
+        window.addEventListener('DOMContentLoaded', loadStoredData);
 
         function processForm(event) {
             event.preventDefault();
 
-            const certNo = document.getElementById('cNo').value;
-            const cPlace = document.getElementById('cPlace').value;
-            const cExpiryDate = document.getElementById('cExpiryDate').value;
-            const cName = document.getElementById('cName').value;
-            const cIdNo = document.getElementById('cIdNo').value;
-            const cGender = document.getElementById('cGender').value;
-            const cNat = document.getElementById('cNat').value;
-            const cJob = document.getElementById('cJob').value;
-            const cIssueDate = document.getElementById('cIssueDate').value;
-            const cProg = document.getElementById('cProg').value;
-            const cProgExp = document.getElementById('cProgExp').value;
-            const cFacName = document.getElementById('cFacName').value;
-            const cFacLic = document.getElementById('cFacLic').value;
+            // تجميع كل القيم المكتوبة من الاستمارة
+            const dataObj = {
+                certNo: document.getElementById('cNo').value,
+                cPlace: document.getElementById('cPlace').value,
+                cExpiryDate: document.getElementById('cExpiryDate').value,
+                cName: document.getElementById('cName').value,
+                cIdNo: document.getElementById('cIdNo').value,
+                cGender: document.getElementById('cGender').value,
+                cNat: document.getElementById('cNat').value,
+                cJob: document.getElementById('cJob').value,
+                cIssueDate: document.getElementById('cIssueDate').value,
+                cProg: document.getElementById('cProg').value,
+                cProgExp: document.getElementById('cProgExp').value,
+                cFacName: document.getElementById('cFacName').value,
+                cFacLic: document.getElementById('cFacLic').value
+            };
 
-            // 1. تعبئة بيانات جدول الصفحة الأولى التقليدية
-            document.getElementById('lCertNo').innerText = certNo;
-            document.getElementById('lCertPlace').innerText = cPlace;
-            document.getElementById('lExpiryDate').innerText = cExpiryDate;
-            document.getElementById('lName').innerText = cName;
-            document.getElementById('lIdNo').innerText = cIdNo;
-            document.getElementById('lGender').innerText = cGender;
-            document.getElementById('lNat').innerText = cNat;
-            document.getElementById('lJob').innerText = cJob;
-        
-            // 2. تعبئة بيانات كارد الصفحة الثالثة
-            document.getElementById('vCertNo').innerText = certNo;
-            document.getElementById('vIssueDate').innerText = cIssueDate;
-            document.getElementById('vExpiryDate').innerText = cExpiryDate;
-            document.getElementById('vName').innerText = cName;
-            document.getElementById('vIdNo').innerText = cIdNo;
-            document.getElementById('vGender').innerText = cGender;
-            document.getElementById('vNat').innerText = cNat;
-            document.getElementById('vJob').innerText = cJob;
-            document.getElementById('vProg').innerText = cProg;
-            document.getElementById('vProgExp').innerText = cProgExp;
-            document.getElementById('vFacName').innerText = cFacName;
-            document.getElementById('vFacLic').innerText = cFacLic;
+            // حفظ البيانات فوراً في ذاكرة المتصفح الثابتة لكي يراها الجوال مباشرة
+            localStorage.setItem('certData', JSON.stringify(dataObj));
 
-            // 3. بناء الرابط المشفر الذي يحتوي على جميع النصوص المكتوبة لتظهر على الجوال
-            const params = new URLSearchParams();
-            params.append('view', 'page3');
-            params.append('cNo', certNo);
-            params.append('cIsDate', cIssueDate);
-            params.append('cExpDate', cExpiryDate);
-            params.append('cNm', cName);
-            params.append('cId', cIdNo);
-            params.append('cGnd', cGender);
-            params.append('cNt', cNat);
-            params.append('cJb', cJob);
-            params.append('cPrg', cProg);
-            params.append('cPrgExp', cProgExp);
-            params.append('cFcNm', cFacName);
-            params.append('cFcLc', cFacLic);
-
+            // توليد الكيو آر كود برابط نظيف وبدون تضخيم
             document.getElementById("outQrImg").innerHTML = "";
-            
-            // الرابط الذكي الكامل الذي سيقرأه الجوال
-            const liveTrackingUrl = window.location.origin + window.location.pathname + "?" + params.toString();
+            const liveTrackingUrl = window.location.origin + window.location.pathname + "?view=page3";
 
             new QRCode(document.getElementById("outQrImg"), {
                 text: liveTrackingUrl,
@@ -567,10 +554,10 @@
                 height: 115,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.M
+                correctLevel : QRCode.CorrectLevel.H
             });
 
-            // 4. معالجة وتمرير الصور المرفوعة وحفظها في الذاكرة لتظهر في الجوال
+            // معالجة الصور وحفظها في الذاكرة
             const headerFile = document.getElementById('inHeaderImg').files[0];
             const userFile = document.getElementById('inUserImg').files[0];
 
@@ -578,6 +565,7 @@
             const checkAndShow = () => {
                 loaded++;
                 if(loaded === 2) {
+                    loadStoredData(); // تحديث فوري وعرض البيانات على الشاشة
                     document.getElementById('inputFormContainer').style.display = 'none';
                     document.getElementById('previewWrapper').style.display = 'block';
                     document.getElementById('controlPanel').style.display = 'block';
@@ -587,23 +575,22 @@
             if(headerFile) {
                 const r1 = new FileReader();
                 r1.onload = function(e) {
-                    document.getElementById('outHeaderImg1').src = e.target.result;
-                    document.getElementById('outHeaderImg3').src = e.target.result;
-                    try { sessionStorage.setItem('savedHeaderImg', e.target.result); } catch(e){}
+                    localStorage.setItem('savedHeaderImg', e.target.result);
                     checkAndShow();
                 };
                 r1.readAsDataURL(headerFile);
-            }
+            } else { loaded++; }
+
             if(userFile) {
                 const r2 = new FileReader();
                 r2.onload = function(e) {
-                    document.getElementById('outUserImg1').src = e.target.result;
-                    document.getElementById('outUserImg3').src = e.target.result;
-                    try { sessionStorage.setItem('savedUserImg', e.target.result); } catch(e){}
+                    localStorage.setItem('savedUserImg', e.target.result);
                     checkAndShow();
                 };
                 r2.readAsDataURL(userFile);
-            }
+            } else { loaded++; }
+            
+            if(!headerFile && !userFile) { checkAndShow(); checkAndShow(); }
         }
 
         async function buildAbsolutePDF() {
