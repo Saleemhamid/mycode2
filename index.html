@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الشهادات الصحية المطور</title>
+    <title>نظام الشهادات الصحية المطور - الترتيب النهائي المعتمد</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -14,10 +14,9 @@
         
         :root {
             --balady-green: #0a8243;
-            --text-dark: #ffffff;
-            --text-gray: #b0b0b0;
-            --line-color: #333333;
-            --bg-dark: #000000;
+            --text-dark: #000000;
+            --text-gray: #7a7a7a;
+            --line-color: #cccccc;
         }
 
         * {
@@ -28,8 +27,7 @@
         }
 
         body {
-            background-color: #121212;
-            color: #ffffff;
+            background-color: #f5f7fa;
             padding: 20px;
             display: flex;
             justify-content: center;
@@ -39,10 +37,10 @@
 
         /* --- استمارة البيانات --- */
         .form-container {
-            background: #1e1e1e;
+            background: #ffffff;
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             width: 100%;
             max-width: 650px;
             margin-bottom: 20px;
@@ -80,15 +78,12 @@
             margin-bottom: 5px;
             font-weight: 600;
             font-size: 14px;
-            color: #e0e0e0;
         }
 
         .form-group input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #444;
-            background-color: #2a2a2a;
-            color: #fff;
+            border: 1px solid #cccccc;
             border-radius: 6px;
             font-size: 14px;
             outline: none;
@@ -107,16 +102,14 @@
             margin-top: 15px;
         }
 
-        /* --- حاوية المعاينة --- */
+        /* --- حاوية المعاينة الثابتة بالأبعاد القياسية للطباعة --- */
         .preview-wrapper {
             display: none;
-            width: 100%;
-            max-width: 440px;
+            width: 440px;
         }
 
         .card-page {
             background: #ffffff;
-            color: #000000;
             width: 440px;
             height: 630px;
             padding: 25px 35px;
@@ -125,8 +118,10 @@
             border: 1px solid #dcdcdc;
             margin-bottom: 20px;
             overflow: hidden;
+            scroll-margin-top: 20px; 
         }
 
+        /* --- الهيدر الموحد لصفحة 1 وصفحة 3 بنفس المقاسات تماماً --- */
         .header-image-container {
             width: 100%;
             height: 70px;
@@ -173,6 +168,7 @@
             margin-bottom: 10px;
         }
 
+        /* جدول الصفحة الأولى */
         .info-table {
             width: 100%;
             border-collapse: collapse;
@@ -190,36 +186,86 @@
             background-color: #f9f9f9;
         }
 
-        .label-cell { font-weight: 800; text-align: right; width: 35%; }
-        .colon-cell { text-align: center; width: 5%; font-weight: 800; }
-        .value-cell { text-align: right; width: 60%; font-weight: 700; }
+        .label-cell {
+            font-weight: 800; 
+            text-align: right;   
+            width: 35%; 
+        }
 
-        /* --- صفحة الجوال (التصميم الأسود المعتمد لديك) --- */
+        .colon-cell {
+            text-align: center;
+            width: 5%;
+            font-weight: 800;
+        }
+
+        .value-cell {
+            text-align: right; 
+            width: 60%;
+            font-weight: 700; 
+        }
+
+        /* --- الصفحة الثانية --- */
+        .back-page {
+            display: flex;
+            flex-direction: column;
+            padding: 50px 30px;
+            justify-content: center;
+        }
+
+        .terms-list {
+            list-style: none;
+            text-align: justify;
+        }
+
+        .terms-list li {
+            margin-bottom: 25px;
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .terms-list li h2 {
+            font-size: 19px;
+            font-weight: 800;
+            display: inline;
+            line-height: 1.5;
+            color: #000000;
+        }
+
+        .terms-list li::before {
+            content: "*";
+            position: absolute;
+            right: 0;
+            top: 2px;
+            font-weight: bold;
+            font-size: 24px;
+            color: #000000;
+        }
+
+        /* --- الصفحة الثالثة --- */
         .third-page-balady {
-            background-color: var(--bg-dark) !important;
-            color: var(--text-dark) !important;
-            padding: 15px;
+            background-color: #fafbfc;
+            padding: 10px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
-            max-width: 440px;
-            min-height: 100vh;
+            border: 3px solid var(--balady-green); 
         }
            
         .balady-avatar-center-wrapper {
-            width: 100%;
+            width: 80%;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
+            margin-top: -10px;
         }
 
         .balady-avatar-center {
-            width: 120px;
-            height: 120px;
-            border: 2px solid var(--balady-green);
+            width: 65px;
+            height: 75px;
+            border-radius: 4px;
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
         .balady-avatar-center img {
@@ -230,52 +276,59 @@
 
         .balady-green-title {
             color: var(--balady-green);
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 700;
-            margin-bottom: 15px;
+            margin-bottom: 8px;
             text-align: center;
-            width: 100%;
-            border-bottom: 1px solid var(--line-color);
-            padding-bottom: 5px;
         }
 
-        .balady-section-title {
-            color: var(--balady-green);
-            font-size: 14px;
-            font-weight: 700;
+        .balady-main-card {
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+            border: 1px solid #ededed;
             width: 100%;
+            padding: 10px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .balady-group-label {
+            color: var(--balady-green);
+            font-size: 11px;
+            font-weight: 700;
             text-align: right;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            margin-top: 1px;
         }
 
         .balady-row {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
-            padding: 4px 0;
-            font-size: 14px;
-            border-bottom: 1px solid #1a1a1a;
+            font-size: 12px;
         }
 
         .balady-item-name {
-            color: #ffffff;
+            color: var(--text-dark);
             font-weight: 700;
-            width: 35%;
             text-align: right;
+            width: 40%;
         }
 
         .balady-item-value {
-            color: var(--text-gray);
+            color: var(--text-dark);
             font-weight: 600;
-            width: 65%;
             text-align: right;
+            width: 60%;
         }
 
         .balady-separator {
             width: 100%;
-            height: 1px;
+            height: 2px;
             background-color: var(--line-color);
-            margin: 10px 0;
+            margin: 3px 0;
         }
 
         .control-panel {
@@ -294,6 +347,7 @@
             width: 100%;
             font-size: 16px;
             font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
     </style>
 </head>
@@ -326,7 +380,7 @@
                 <div class="form-group full-width"><label>اسم المنشأة:</label><input type="text" id="cFacName" placeholder="شركة عيادات صفا مكة" required></div>
                 <div class="form-group full-width"><label>رقم رخصة المنشأة:</label><input type="text" id="cFacLic" placeholder="43058039930" required></div>
             </div>
-            <button type="submit" class="btn-submit">توليد ومعاينة الشهادة فوراً</button>
+            <button type="submit" class="btn-submit">توليد ومعاينة الـ 3 صفحات</button>
         </form>
     </div>
 
@@ -338,7 +392,7 @@
             </div>
             <div class="images-section">
                 <div id="outQrImg" class="qr-photo"></div>
-                <img id="outUserImg1" class="user-photo" src="">
+                <img id="outUserImg1" class="user-photo">
             </div>
             <div class="title-badge">شهادة صحية</div>
             <table class="info-table">
@@ -354,7 +408,17 @@
             </table>
         </div>
 
-        <div class="third-page-balady" id="page3" style="display:none;">
+        <div class="card-page back-page" id="page2">
+            <ul class="terms-list">
+                <li><h2>حامل هذه الشهادة حاصل على تقرير طبي يثبت خلوه من الأمراض المعدية وأجريت له التطعيمات التي تخوله للعمل في محلات الأغذية والصحة العامة</h2></li>
+                <li><h2>تشغيل عمال ليس لديهم شهادات صحية أو لديهم شهادات صحية منتهية يعاقب عليها النظام بغرامة مالية عن كل عامل</h2></li>
+                <li><h2>تجديد هذه الشهادة قبل انتهائها بثلاثين يوماً</h2></li>
+                <li><h2>لا تعتبر هذه الشهادة إثباتاً هوياً لحامليها</h2></li>
+                <li><h2>للتأكد من سلامة الشهادة يرجى زيارة موقع أمانة منطقة الرياض</h2></li>
+            </ul>
+        </div>
+
+        <div class="card-page third-page-balady" id="page3">
             <div class="header-image-container">
                 <img id="outHeaderImg3" class="header-uploaded-img" src="">
             </div>
@@ -367,47 +431,50 @@
 
             <div class="balady-green-title">شهادة صحية</div>
 
-            <div class="balady-section-title">بيانات الشهادة:</div>
-            <div class="balady-row"><span class="balady-item-name">رقم الشهادة</span><span class="balady-item-value" id="vCertNo"></span></div>
-            <div class="balady-row"><span class="balady-item-name">تاريخ الإصدار</span><span class="balady-item-value" id="vIssueDate"></span></div>
-            <div class="balady-row"><span class="balady-item-name">نهاية الصلاحية</span><span class="balady-item-value" id="vExpiryDate"></span></div>
-            
-            <div class="balady-separator"></div>
+            <div class="balady-main-card">
+                <div class="balady-group-label">بيانات الشهادة:</div>
+                <div class="balady-row"><span class="balady-item-name">رقم الشهادة</span><span class="balady-item-value" id="vCertNo"></span></div>
+                <div class="balady-row"><span class="balady-item-name">تاريخ الإصدار</span><span class="balady-item-value" id="vIssueDate"></span></div>
+                <div class="balady-row"><span class="balady-item-name">نهاية الصلاحية</span><span class="balady-item-value" id="vExpiryDate"></span></div>
+                
+                <div class="balady-separator"></div>
 
-            <div class="balady-section-title">بيانات صاحب الشهادة:</div>
-            <div class="balady-row"><span class="balady-item-name">الاسم</span><span class="balady-item-value" id="vName"></span></div>
-            <div class="balady-row"><span class="balady-item-name">رقم الهوية</span><span class="balady-item-value" id="vIdNo"></span></div>
-            <div class="balady-row"><span class="balady-item-name">الجنس</span><span class="balady-item-value" id="vGender"></span></div>
-            <div class="balady-row"><span class="balady-item-name">الجنسية</span><span class="balady-item-value" id="vNat"></span></div>
-            <div class="balady-row"><span class="balady-item-name">المهنة</span><span class="balady-item-value" id="vJob"></span></div>
-            <div class="balady-row"><span class="balady-item-name">البرنامج التثقيفي</span><span class="balady-item-value" id="vProg"></span></div>
-            <div class="balady-row"><span class="balady-item-name">تاريخ انتهاء البرنامج</span><span class="balady-item-value" id="vProgExp"></span></div>
-            
-            <div class="balady-separator"></div>
+                <div class="balady-group-label">بيانات صاحب الشهادة:</div>
+                <div class="balady-row"><span class="balady-item-name">الاسم</span><span class="balady-item-value" id="vName"></span></div>
+                <div class="balady-row"><span class="balady-item-name">رقم الهوية</span><span class="balady-item-value" id="vIdNo"></span></div>
+                <div class="balady-row"><span class="balady-item-name">الجنس</span><span class="balady-item-value" id="vGender"></span></div>
+                <div class="balady-row"><span class="balady-item-name">الجنسية</span><span class="balady-item-value" id="vNat"></span></div>
+                <div class="balady-row"><span class="balady-item-name">المهنة</span><span class="balady-item-value" id="vJob"></span></div>
+                <div class="balady-row"><span class="balady-item-name">البرنامج التثقيفي</span><span class="balady-item-value" id="vProg"></span></div>
+                <div class="balady-row"><span class="balady-item-name">تاريخ انتهاء البرنامج</span><span class="balady-item-value" id="vProgExp"></span></div>
+                
+                <div class="balady-separator"></div>
 
-            <div class="balady-section-title">بيانات المنشأة:</div>
-            <div class="balady-row"><span class="balady-item-name">اسم المنشأة</span><span class="balady-item-value" id="vFacName"></span></div>
-            <div class="balady-row"><span class="balady-item-name">رقم رخصة المنشأة</span><span class="balady-item-value" id="vFacLic"></span></div>
+                <div class="balady-group-label">بيانات المنشأة:</div>
+                <div class="balady-row"><span class="balady-item-name">اسم المنشأة</span><span class="balady-item-value" id="vFacName"></span></div>
+                <div class="balady-row"><span class="balady-item-name">رقم رخصة المنشأة</span><span class="balady-item-value" id="vFacLic"></span></div>
+            </div>
         </div>
     </div>
 
     <div class="control-panel" id="controlPanel">
-        <button class="btn-pdf" onclick="generatePDF()">تحميل الـ PDF النهائي للطباعة</button>
+        <button class="btn-pdf" onclick="buildAbsolutePDF()">حفظ وتحميل الـ PDF النهائي المضمون 100%</button>
     </div>
 
-    <script>
+   <script>
         // دالة الفحص الفوري عند فتح الرابط من الجوال
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             
             if (urlParams.get('view') === 'page3') {
-                // إخفاء الفيرم للكمبيوتر وإظهار تصميم الجوال فوراً
+                // إخفاء الفورم والصفحات الأولى وإظهار الصفحة الثالثة فقط للجوال
                 document.getElementById('inputFormContainer').style.display = 'none';
                 document.getElementById('previewWrapper').style.display = 'block';
                 document.getElementById('page1').style.display = 'none';
+                document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
 
-                // استخراج البيانات المباشرة من رابط الكيو آر وعرضها في السطور المحددة
+                // عرض القيم الحقيقية الممررة من الكمبيوتر إلى الجوال مباشرة تحت كل العناوين
                 document.getElementById('vCertNo').innerText = urlParams.get('cNo') || '';
                 document.getElementById('vIssueDate').innerText = urlParams.get('cIsDate') || '';
                 document.getElementById('vExpiryDate').innerText = urlParams.get('cExpDate') || '';
@@ -421,18 +488,18 @@
                 document.getElementById('vFacName').innerText = urlParams.get('cFcNm') || '';
                 document.getElementById('vFacLic').innerText = urlParams.get('cFcLc') || '';
 
-                // استرجاع الصور المخزنة في المتصفح تلقائياً
-                const storedHeader = localStorage.getItem('savedHeaderImg');
-                const storedUser = localStorage.getItem('savedUserImg');
-                if (storedHeader) document.getElementById('outHeaderImg3').src = storedHeader;
-                if (storedUser) document.getElementById('outUserImg3').src = storedUser;
+                // جلب الصور من الذاكرة المحلية لكي تظهر صورة العامل والشعار فوراً
+                const savedHeader = localStorage.getItem('savedHeaderImg');
+                const savedUser = localStorage.getItem('savedUserImg');
+                if(savedHeader) document.getElementById('outHeaderImg3').src = savedHeader;
+                if(savedUser) document.getElementById('outUserImg3').src = savedUser;
             }
         });
 
         function processForm(event) {
             event.preventDefault();
 
-            // جلب البيانات من المدخلات
+            // تجميع القيم المكتوبة من الاستمارة
             const cNo = document.getElementById('cNo').value;
             const cPlace = document.getElementById('cPlace').value;
             const cIssueDate = document.getElementById('cIssueDate').value;
@@ -447,7 +514,7 @@
             const cFacName = document.getElementById('cFacName').value;
             const cFacLic = document.getElementById('cFacLic').value;
 
-            // حقن البيانات في واجهة المعاينة للكمبيوتر والطباعة
+            // تعبئة حقول المعاينة في الصفحة الأولى
             document.getElementById('lCertNo').innerText = cNo;
             document.getElementById('lCertPlace').innerText = cPlace;
             document.getElementById('lExpiryDate').innerText = cExpiryDate;
@@ -461,7 +528,7 @@
             const liveTrackingUrl = window.location.origin + window.location.pathname + 
                 `?view=page3&cNo=${encodeURIComponent(cNo)}&cIsDate=${encodeURIComponent(cIssueDate)}&cExpDate=${encodeURIComponent(cExpiryDate)}&cNm=${encodeURIComponent(cName)}&cId=${encodeURIComponent(cIdNo)}&cGnd=${encodeURIComponent(cGender)}&cNt=${encodeURIComponent(cNat)}&cJb=${encodeURIComponent(cJob)}&cPrg=${encodeURIComponent(cProg)}&cPrgExp=${encodeURIComponent(cProgExp)}&cFcNm=${encodeURIComponent(cFacName)}&cFcLc=${encodeURIComponent(cFacLic)}`;
 
-            // توليد الكيو آر كود المضمون والخفيف
+            // توليد الكيو آر كود المضمون
             document.getElementById("outQrImg").innerHTML = "";
             new QRCode(document.getElementById("outQrImg"), {
                 text: liveTrackingUrl,
@@ -472,7 +539,7 @@
                 correctLevel : QRCode.CorrectLevel.L
             });
 
-            // قراءة وحفظ الصور في الذاكرة الدائمة للموقع
+            // معالجة الصور وحفظها في الذاكرة
             const headerFile = document.getElementById('inHeaderImg').files[0];
             const userFile = document.getElementById('inUserImg').files[0];
 
@@ -486,24 +553,24 @@
                 }
             };
 
-            if (headerFile) {
-                const reader1 = new FileReader();
-                reader1.onload = function(e) {
+            if(headerFile) {
+                const r1 = new FileReader();
+                r1.onload = function(e) {
                     localStorage.setItem('savedHeaderImg', e.target.result);
                     document.getElementById('outHeaderImg1').src = e.target.result;
                     finalizeUI();
                 };
-                reader1.readAsDataURL(headerFile);
+                r1.readAsDataURL(headerFile);
             } else { finalizeUI(); }
 
-            if (userFile) {
-                const reader2 = new FileReader();
-                reader2.onload = function(e) {
+            if(userFile) {
+                const r2 = new FileReader();
+                r2.onload = function(e) {
                     localStorage.setItem('savedUserImg', e.target.result);
                     document.getElementById('outUserImg1').src = e.target.result;
                     finalizeUI();
                 };
-                reader2.readAsDataURL(userFile);
+                r2.readAsDataURL(userFile);
             } else { finalizeUI(); }
         }
 
