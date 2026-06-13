@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght=400;600;700;800&display=swap');
          
         :root {
             --balady-green: #0a8243;
@@ -465,15 +465,14 @@
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             
-            // إذا كان الرابط يحتوي على معامل التوجيه الخاص بالـ QR، يتم عرض صفحة بلدي الثالثة تلقائياً بالبيانات الحية الممررة
             if (urlParams.get('view') === 'page3') {
+                // إخفاء الاستمارة والصفحات الأخرى وإجبار الصفحة الثالثة على الظهور فوراً
                 document.getElementById('inputFormContainer').style.display = 'none';
                 document.getElementById('previewWrapper').style.display = 'block';
                 document.getElementById('page1').style.display = 'none';
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
 
-                // تعبئة البيانات حياً وتلقائياً من بارامترات الرابط دون تعديل يدوي
                 document.getElementById('vCertNo').innerText = urlParams.get('cNo') || '';
                 document.getElementById('vIssueDate').innerText = urlParams.get('cIssueDate') || '';
                 document.getElementById('vExpiryDate').innerText = urlParams.get('cExpiryDate') || '';
@@ -487,7 +486,6 @@
                 document.getElementById('vFacName').innerText = urlParams.get('cFacName') || '';
                 document.getElementById('vFacLic').innerText = urlParams.get('cFacLic') || '';
 
-                // محاولة استرجاع الصور المخزنة محلياً لغرض استعراضها على نفس الجهاز
                 const savedHeader = localStorage.getItem('headerImg');
                 const savedUser = localStorage.getItem('userImg');
                 if(savedHeader) document.getElementById('outHeaderImg3').src = savedHeader;
@@ -498,7 +496,6 @@
         function fillDataFields() {
             const certNo = document.getElementById('cNo').value;
 
-            // 1. تعبئة بيانات جدول الصفحة الأولى
             document.getElementById('lCertNo').innerText = certNo;
             document.getElementById('lCertPlace').innerText = document.getElementById('cPlace').value;
             document.getElementById('lExpiryDate').innerText = document.getElementById('cExpiryDate').value;
@@ -508,7 +505,6 @@
             document.getElementById('lNat').innerText = document.getElementById('cNat').value;
             document.getElementById('lJob').innerText = document.getElementById('cJob').value;
         
-            // 2. تعبئة بيانات كارد الصفحة الثالثة (صفحة بلدي)
             document.getElementById('vCertNo').innerText = certNo;
             document.getElementById('vIssueDate').innerText = document.getElementById('cIssueDate').value;
             document.getElementById('vExpiryDate').innerText = document.getElementById('cExpiryDate').value;
@@ -525,11 +521,8 @@
 
         function processForm(event) {
             event.preventDefault();
-
-            // تعبئة البيانات في الحقول
             fillDataFields();
 
-            // تجهيز المتغيرات والترميز بشكل صحيح وسليم لمنع مشاكل الأحرف العربية والمسافات
             const cNo = encodeURIComponent(document.getElementById('cNo').value);
             const cIssueDate = encodeURIComponent(document.getElementById('cIssueDate').value);
             const cExpiryDate = encodeURIComponent(document.getElementById('cExpiryDate').value);
@@ -545,7 +538,6 @@
 
             document.getElementById("outQrImg").innerHTML = "";
 
-            // بناء رابط التتبع المباشر والشامل لكافة تفاصيل المدخلات
             const liveTrackingUrl = window.location.origin + window.location.pathname + 
                 `?view=page3&cNo=${cNo}&cIssueDate=${cIssueDate}&cExpiryDate=${cExpiryDate}&cName=${cName}&cIdNo=${cIdNo}&cGender=${cGender}&cNat=${cNat}&cJob=${cJob}&cProg=${cProg}&cProgExp=${cProgExp}&cFacName=${cFacName}&cFacLic=${cFacLic}`;
             
@@ -558,38 +550,39 @@
                 correctLevel : QRCode.CorrectLevel.L
             });
 
-            // معالجة الصور المرفوعة وتحويلها لعرض فوري
-            const mapping = [
-                { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3', key: 'headerImg' },
-                { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3', key: 'userImg' }
-            ];
+            // قراءة ومعالجة الصور بشكل مستقل دون حظر الواجهة أو إخفاء الصفحة الثالثة بشكل خاطئ
+            const headerFile = document.getElementById('inHeaderImg').files[0];
+            const userFile = document.getElementById('inUserImg').files[0];
 
-            let loadedCount = 0;
-            mapping.forEach(item => {
-                const file = document.getElementById(item.input).files[0];
-                if(file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        if(item.view1) document.getElementById(item.view1).src = e.target.result;
-                        if(item.view3) document.getElementById(item.view3).src = e.target.result;
-                        
-                        try { localStorage.setItem(item.key, e.target.result); } catch(err){}
-                        
-                        loadedCount++;
-                        if(loadedCount === 2) {
-                            document.getElementById('inputFormContainer').style.display = 'none';
-                            document.getElementById('previewWrapper').style.display = 'block';
-                            
-                            document.getElementById('page1').style.display = 'block';
-                            document.getElementById('page2').style.display = 'block';
-                            document.getElementById('page3').style.display = 'none'; 
-                            
-                            document.getElementById('controlPanel').style.display = 'block';
-                        }
-                    }
-                    reader.readAsDataURL(file);
+            if (headerFile) {
+                const reader1 = new FileReader();
+                reader1.onload = function(e) {
+                    document.getElementById('outHeaderImg1').src = e.target.result;
+                    document.getElementById('outHeaderImg3').src = e.target.result;
+                    localStorage.setItem('headerImg', e.target.result);
                 }
-            });
+                reader1.readAsDataURL(headerFile);
+            }
+
+            if (userFile) {
+                const reader2 = new FileReader();
+                reader2.onload = function(e) {
+                    document.getElementById('outUserImg1').src = e.target.result;
+                    document.getElementById('outUserImg3').src = e.target.result;
+                    localStorage.setItem('userImg', e.target.result);
+                }
+                reader2.readAsDataURL(userFile);
+            }
+
+            // إظهار المعاينة مباشرة والتحكم بالصفحات بشكل سليم
+            document.getElementById('inputFormContainer').style.display = 'none';
+            document.getElementById('previewWrapper').style.display = 'block';
+            
+            document.getElementById('page1').style.display = 'block';
+            document.getElementById('page2').style.display = 'block';
+            document.getElementById('page3').style.display = 'none'; // تخفى هنا مؤقتاً لتظهر في الـ PDF المجمع فقط
+            
+            document.getElementById('controlPanel').style.display = 'block';
         }
 
         async function buildAbsolutePDF() {
@@ -604,16 +597,13 @@
             const p2 = document.getElementById('page2');
             const p3 = document.getElementById('page3');
             const filename = document.getElementById('cNo').value || 'Certificate';
-
-            // حفظ الحالة الحالية للعرض قبل عملية الالتقاط
             const isLiveView = window.location.href.includes('view=page3');
 
-            // إجبار كل الصفحات على الظهور المؤقت لالتقاط الـ Canvas بشكل صحيح ومكتمل
+            // إظهار كل الصفحات إجبارياً للـ canvas 
             p1.style.display = 'block';
             p2.style.display = 'block';
             p3.style.display = 'block';
 
-            // إعدادات الـ html2canvas المحسنة لضمان ثبات جودة النصوص والصور والـ CORS
             const opts = { 
                 scale: 3, 
                 useCORS: true, 
@@ -623,28 +613,24 @@
             };
 
             try {
-                // التقاط وإدراج الصفحة الأولى
                 const c1 = await html2canvas(p1, opts);
                 pdf.addImage(c1.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
 
-                // إضافة الصفحة الثانية والتقاطها
                 pdf.addPage([116, 166], 'portrait');
                 const c2 = await html2canvas(p2, opts);
                 pdf.addImage(c2.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
 
-                // إضافة الصفحة الثالثة والتقاطها
                 pdf.addPage([116, 166], 'portrait');
                 const c3 = await html2canvas(p3, opts);
                 pdf.addImage(c3.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
 
-                // حفظ ملف الـ PDF النهائي المجمع
                 pdf.save('Balady_Final_Form_' + filename + '.pdf');
 
             } catch (err) {
                 console.error(err);
                 alert('حدث خطأ أثناء إعداد المستند الإلكتروني، يرجى إعادة المحاولة.');
             } finally {
-                // إعادة استعادة حالة واجهة المعاينة الصحيحة للمستخدم حسب طريقة الدخول
+                // إرجاع واجهة المستخدم كما كانت
                 if (isLiveView) {
                     p1.style.display = 'none';
                     p2.style.display = 'none';
