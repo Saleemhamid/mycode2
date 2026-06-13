@@ -463,40 +463,39 @@
 
     <script>
         // فحص تلقائي عند بدء فتح الصفحة للتحقق من المسح بالجوال عبر الـ QR
-        window.addEventListener('DOMContentLoaded', () => {
-            const params = new URLSearchParams(window.location.search);
-            
-            // إذا كان الرابط يحتوي على معامل التوجيه الخاص بالـ QR ومعه البيانات، نقرأها ونعرضها فوراً
-            if (params.has('view') && params.get('view') === 'page3') {
-                document.getElementById('inputFormContainer').style.display = 'none';
-                document.getElementById('previewWrapper').style.display = 'block';
-                document.getElementById('page1').style.display = 'none';
-                document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'block';
+     // ابحث عن هذه الدالة في أسفل الكود واستبدلها بهذا الشكل يدوياً:
+window.addEventListener('DOMContentLoaded', () => {
+    const currentUrl = window.location.href;
+    
+    // إذا كان الرابط يحتوي على معامل التوجيه الخاص بالـ QR، نعرض صفحة بلدي الثالثة فقط
+    if (currentUrl.includes('view=page3')) {
+        document.getElementById('inputFormContainer').style.display = 'none';
+        document.getElementById('previewWrapper').style.display = 'block';
+        document.getElementById('page1').style.display = 'none';
+        document.getElementById('page2').style.display = 'none';
+        document.getElementById('page3').style.display = 'block';
 
-                // تعبئة البيانات الثابتة من الرابط مباشرة إلى الصفحة الثالثة لتعمل بالجوال
-                document.getElementById('vCertNo').innerText = params.get('cNo') || '';
-                document.getElementById('vIssueDate').innerText = params.get('cIssueDate') || '';
-                document.getElementById('vExpiryDate').innerText = params.get('cExpiryDate') || '';
-                document.getElementById('vName').innerText = params.get('cName') || '';
-                document.getElementById('vIdNo').innerText = params.get('cIdNo') || '';
-                document.getElementById('vGender').innerText = params.get('cGender') || '';
-                document.getElementById('vNat').innerText = params.get('cNat') || '';
-                document.getElementById('vJob').innerText = params.get('cJob') || '';
-                document.getElementById('vProg').innerText = params.get('cProg') || '';
-                document.getElementById('vProgExp').innerText = params.get('cProgExp') || '';
-                document.getElementById('vFacName').innerText = params.get('cFacName') || '';
-                document.getElementById('vFacLic').innerText = params.get('cFacLic') || '';
-
-                // محاولة استرجاع الصور المحفوظة مؤقتاً إذا كانت موجودة
-                if(localStorage.getItem('headerImg')) {
-                    document.getElementById('outHeaderImg3').src = localStorage.getItem('headerImg');
-                }
-                if(localStorage.getItem('userImg')) {
-                    document.getElementById('outUserImg3').src = localStorage.getItem('userImg');
-                }
-            }
-        });
+        // 📝 اكتب بياناتك الثابتة هنا يدوياً بين الفواصل العليا ''
+        
+        // --- بيانات الشهادة ---
+        document.getElementById('vCertNo').innerText = '26069-1447';        // رقم الشهادة
+        document.getElementById('vIssueDate').innerText = '1447/12/21';     // تاريخ الإصدار
+        document.getElementById('vExpiryDate').innerText = '1448/12/21';    // نهاية الصلاحية
+        
+        // --- بيانات صاحب الشهادة ---
+        document.getElementById('vName').innerText = 'MD IQBAL HOSSAIN';     // الاسم الكامل للعامِل
+        document.getElementById('vIdNo').innerText = '2500113531';           // رقم الهوية / الإقامة
+        document.getElementById('vGender').innerText = 'ذكر';                // الجنس
+        document.getElementById('vNat').innerText = 'بنغلاديش';             // الجنسية
+        document.getElementById('vJob').innerText = 'عامل مطبخ';             // المهنة
+        document.getElementById('vProg').innerText = 'منشآت الغذاء';          // البرنامج التثقيفي
+        document.getElementById('vProgExp').innerText = '1450/12/28';       // تاريخ انتهاء البرنامج
+        
+        // --- بيانات المنشأة ---
+        document.getElementById('vFacName').innerText = 'شركة عيادات صفا مكة'; // اسم المنشأة
+        document.getElementById('vFacLic').innerText = '43058039930';         // رقم رخصة المنشأة
+    }
+});
 
         // دالة مخصصة لتعبئة حقول البيانات في الـ HTML بشكل موحد للجهتين
         function fillDataFields() {
