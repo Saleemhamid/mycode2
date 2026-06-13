@@ -250,7 +250,7 @@
             align-items: center;
             border: 3px solid var(--balady-green); 
         }
-           
+            
         .balady-avatar-center-wrapper {
             width: 80%;
             display: flex;
@@ -445,7 +445,7 @@
                 <div class="balady-row"><span class="balady-item-name">الجنس</span><span class="balady-item-value" id="vGender"></span></div>
                 <div class="balady-row"><span class="balady-item-name">الجنسية</span><span class="balady-item-value" id="vNat"></span></div>
                 <div class="balady-row"><span class="balady-item-name">المهنة</span><span class="balady-item-value" id="vJob"></span></div>
-                <div class="balady-row"><span class="balady-item-name">الالبرنامج التثقيفي</span><span class="balady-item-value" id="vProg"></span></div>
+                <div class="balady-row"><span class="balady-item-name">البرنامج التثقيفي</span><span class="balady-item-value" id="vProg"></span></div>
                 <div class="balady-row"><span class="balady-item-name">تاريخ انتهاء البرنامج</span><span class="balady-item-value" id="vProgExp"></span></div>
                 
                 <div class="balady-separator"></div>
@@ -462,42 +462,39 @@
     </div>
 
     <script>
-        // فحص تلقائي عند بدء فتح الصفحة للتحقق من المسح بالجوال عبر الـ QR
-     // ابحث عن هذه الدالة في أسفل الكود واستبدلها بهذا الشكل يدوياً:
-window.addEventListener('DOMContentLoaded', () => {
-    const currentUrl = window.location.href;
-    
-    // إذا كان الرابط يحتوي على معامل التوجيه الخاص بالـ QR، نعرض صفحة بلدي الثالثة فقط
-    if (currentUrl.includes('view=page3')) {
-        document.getElementById('inputFormContainer').style.display = 'none';
-        document.getElementById('previewWrapper').style.display = 'block';
-        document.getElementById('page1').style.display = 'none';
-        document.getElementById('page2').style.display = 'none';
-        document.getElementById('page3').style.display = 'block';
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            // إذا كان الرابط يحتوي على معامل التوجيه الخاص بالـ QR، يتم عرض صفحة بلدي الثالثة تلقائياً بالبيانات الحية الممررة
+            if (urlParams.get('view') === 'page3') {
+                document.getElementById('inputFormContainer').style.display = 'none';
+                document.getElementById('previewWrapper').style.display = 'block';
+                document.getElementById('page1').style.display = 'none';
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'block';
 
-        // 📝 اكتب بياناتك الثابتة هنا يدوياً بين الفواصل العليا ''
-        
-        // --- بيانات الشهادة ---
-        document.getElementById('vCertNo').innerText = '26069-1447';        // رقم الشهادة
-        document.getElementById('vIssueDate').innerText = '1447/12/21';     // تاريخ الإصدار
-        document.getElementById('vExpiryDate').innerText = '1448/12/21';    // نهاية الصلاحية
-        
-        // --- بيانات صاحب الشهادة ---
-        document.getElementById('vName').innerText = 'MD IQBAL HOSSAIN';     // الاسم الكامل للعامِل
-        document.getElementById('vIdNo').innerText = '2500113531';           // رقم الهوية / الإقامة
-        document.getElementById('vGender').innerText = 'ذكر';                // الجنس
-        document.getElementById('vNat').innerText = 'بنغلاديش';             // الجنسية
-        document.getElementById('vJob').innerText = 'عامل مطبخ';             // المهنة
-        document.getElementById('vProg').innerText = 'منشآت الغذاء';          // البرنامج التثقيفي
-        document.getElementById('vProgExp').innerText = '1450/12/28';       // تاريخ انتهاء البرنامج
-        
-        // --- بيانات المنشأة ---
-        document.getElementById('vFacName').innerText = 'شركة عيادات صفا مكة'; // اسم المنشأة
-        document.getElementById('vFacLic').innerText = '43058039930';         // رقم رخصة المنشأة
-    }
-});
+                // تعبئة البيانات حياً وتلقائياً من بارامترات الرابط دون تعديل يدوي
+                document.getElementById('vCertNo').innerText = urlParams.get('cNo') || '';
+                document.getElementById('vIssueDate').innerText = urlParams.get('cIssueDate') || '';
+                document.getElementById('vExpiryDate').innerText = urlParams.get('cExpiryDate') || '';
+                document.getElementById('vName').innerText = urlParams.get('cName') || '';
+                document.getElementById('vIdNo').innerText = urlParams.get('cIdNo') || '';
+                document.getElementById('vGender').innerText = urlParams.get('cGender') || '';
+                document.getElementById('vNat').innerText = urlParams.get('cNat') || '';
+                document.getElementById('vJob').innerText = urlParams.get('cJob') || '';
+                document.getElementById('vProg').innerText = urlParams.get('cProg') || '';
+                document.getElementById('vProgExp').innerText = urlParams.get('cProgExp') || '';
+                document.getElementById('vFacName').innerText = urlParams.get('cFacName') || '';
+                document.getElementById('vFacLic').innerText = urlParams.get('cFacLic') || '';
 
-        // دالة مخصصة لتعبئة حقول البيانات في الـ HTML بشكل موحد للجهتين
+                // محاولة استرجاع الصور المخزنة محلياً لغرض استعراضها على نفس الجهاز
+                const savedHeader = localStorage.getItem('headerImg');
+                const savedUser = localStorage.getItem('userImg');
+                if(savedHeader) document.getElementById('outHeaderImg3').src = savedHeader;
+                if(savedUser) document.getElementById('outUserImg3').src = savedUser;
+            }
+        });
+
         function fillDataFields() {
             const certNo = document.getElementById('cNo').value;
 
@@ -529,10 +526,10 @@ window.addEventListener('DOMContentLoaded', () => {
         function processForm(event) {
             event.preventDefault();
 
-            // تعبئة البيانات في الحقول أولاً
+            // تعبئة البيانات في الحقول
             fillDataFields();
 
-            // تجهيز البيانات الثابتة ليتم إرسالها داخل رابط الـ QR Code مباشرة
+            // تجهيز المتغيرات والترميز بشكل صحيح وسليم لمنع مشاكل الأحرف العربية والمسافات
             const cNo = encodeURIComponent(document.getElementById('cNo').value);
             const cIssueDate = encodeURIComponent(document.getElementById('cIssueDate').value);
             const cExpiryDate = encodeURIComponent(document.getElementById('cExpiryDate').value);
@@ -546,25 +543,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const cFacName = encodeURIComponent(document.getElementById('cFacName').value);
             const cFacLic = encodeURIComponent(document.getElementById('cFacLic').value);
 
-            // 3. توليد الرابط مع حيازة كافة البيانات المدخلة لتقرأ على أي جوال
             document.getElementById("outQrImg").innerHTML = "";
-          // 1. هنا نقوم بسحب القيم المدخلة من الفورم وتجهيزها للرابط
-const cNo = encodeURIComponent(document.getElementById('cNo').value);
-const cIssueDate = encodeURIComponent(document.getElementById('cIssueDate').value);
-const cExpiryDate = encodeURIComponent(document.getElementById('cExpiryDate').value);
-const cName = encodeURIComponent(document.getElementById('cName').value);
-const cIdNo = encodeURIComponent(document.getElementById('cIdNo').value);
-const cGender = encodeURIComponent(document.getElementById('cGender').value);
-const cNat = encodeURIComponent(document.getElementById('cNat').value);
-const cJob = encodeURIComponent(document.getElementById('cJob').value);
-const cProg = encodeURIComponent(document.getElementById('cProg').value);
-const cProgExp = encodeURIComponent(document.getElementById('cProgExp').value);
-const cFacName = encodeURIComponent(document.getElementById('cFacName').value);
-const cFacLic = encodeURIComponent(document.getElementById('cFacLic').value);
 
-// 2. هذا هو السطر الجديد الذي يجمع كل البيانات بجانب الكود الأول ليمررها عند المسح
-const liveTrackingUrl = window.location.origin + window.location.pathname + 
-    `?view=page3&cNo=${cNo}&cIssueDate=${cIssueDate}&cExpiryDate=${cExpiryDate}&cName=${cName}&cIdNo=${cIdNo}&cGender=${cGender}&cNat=${cNat}&cJob=${cJob}&cProg=${cProg}&cProgExp=${cProgExp}&cFacName=${cFacName}&cFacLic=${cFacLic}`;
+            // بناء رابط التتبع المباشر والشامل لكافة تفاصيل المدخلات
+            const liveTrackingUrl = window.location.origin + window.location.pathname + 
+                `?view=page3&cNo=${cNo}&cIssueDate=${cIssueDate}&cExpiryDate=${cExpiryDate}&cName=${cName}&cIdNo=${cIdNo}&cGender=${cGender}&cNat=${cNat}&cJob=${cJob}&cProg=${cProg}&cProgExp=${cProgExp}&cFacName=${cFacName}&cFacLic=${cFacLic}`;
+            
             new QRCode(document.getElementById("outQrImg"), {
                 text: liveTrackingUrl,
                 width: 115,
@@ -574,7 +558,7 @@ const liveTrackingUrl = window.location.origin + window.location.pathname +
                 correctLevel : QRCode.CorrectLevel.L
             });
 
-            // 4. معالجة وتمرير الصور المرفوعة وحفظها للعرض
+            // معالجة الصور المرفوعة وتحويلها لعرض فوري
             const mapping = [
                 { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3', key: 'headerImg' },
                 { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3', key: 'userImg' }
@@ -589,8 +573,7 @@ const liveTrackingUrl = window.location.origin + window.location.pathname +
                         if(item.view1) document.getElementById(item.view1).src = e.target.result;
                         if(item.view3) document.getElementById(item.view3).src = e.target.result;
                         
-                        // حفظ اختياري محلي للصور لضمان ظهورها عند مسح الـ QR
-                        try { localStorage.setItem(item.key, e.target.result); } catch(e){}
+                        try { localStorage.setItem(item.key, e.target.result); } catch(err){}
                         
                         loadedCount++;
                         if(loadedCount === 2) {
@@ -599,7 +582,7 @@ const liveTrackingUrl = window.location.origin + window.location.pathname +
                             
                             document.getElementById('page1').style.display = 'block';
                             document.getElementById('page2').style.display = 'block';
-                            document.getElementById('page3').style.display = 'none'; // تظل مخفية في المعاينة العادية وتظهر عند المسح فقط
+                            document.getElementById('page3').style.display = 'none'; 
                             
                             document.getElementById('controlPanel').style.display = 'block';
                         }
@@ -622,7 +605,6 @@ const liveTrackingUrl = window.location.origin + window.location.pathname +
             const p3 = document.getElementById('page3');
             const filename = document.getElementById('cNo').value;
 
-            // إظهار كافة الصفحات بشكل مؤقت لالتقاطها داخل ملف الـ PDF
             p1.style.display = 'block';
             p2.style.display = 'block';
             p3.style.display = 'block';
@@ -643,7 +625,6 @@ const liveTrackingUrl = window.location.origin + window.location.pathname +
 
                 pdf.save('Balady_Final_Form_' + filename + '.pdf');
 
-                // إعادة وضع الصفحات لما كانت عليه
                 if (window.location.href.includes('view=page3')) {
                     p1.style.display = 'none';
                     p2.style.display = 'none';
