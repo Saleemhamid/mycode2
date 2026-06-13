@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الشهادات الصحية المطور - الترتيب النهائي المعتمد</title>
+    <title>نظام الشهادات الصحية المستقر</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -15,7 +15,6 @@
         :root {
             --balady-green: #0a8243;
             --text-dark: #000000;
-            --text-gray: #7a7a7a;
             --line-color: #cccccc;
         }
 
@@ -33,12 +32,12 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            color: #000000 !important;
         }
 
-        /* --- استمارة البيانات --- */
+        /* استمارة إدخال البيانات */
         .form-container {
             background: #ffffff !important;
-            color: #000000 !important;
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -66,20 +65,11 @@
             .form-grid { grid-template-columns: 1fr; }
         }
 
-        .form-group {
-            margin-bottom: 10px;
-        }
-
-        .form-group.full-width {
-            grid-column: span 2;
-        }
-
         .form-group label {
             display: block;
             margin-bottom: 5px;
             font-weight: 600;
             font-size: 14px;
-            color: #000000 !important;
         }
 
         .form-group input {
@@ -88,10 +78,11 @@
             border: 1px solid #cccccc;
             border-radius: 6px;
             font-size: 14px;
-            outline: none;
             background-color: #ffffff !important;
             color: #000000 !important;
         }
+
+        .form-group.full-width { grid-column: span 2; }
 
         .btn-submit {
             background-color: var(--balady-green);
@@ -106,7 +97,7 @@
             margin-top: 15px;
         }
 
-        /* --- حاوية المعاينة --- */
+        /* حاويات المعاينة والطباعة */
         .preview-wrapper {
             display: none;
             width: 440px;
@@ -119,7 +110,6 @@
             height: 630px;
             padding: 25px 35px;
             position: relative;
-            box-sizing: border-box;
             border: 1px solid #dcdcdc;
             margin-bottom: 20px;
             overflow: hidden;
@@ -135,222 +125,147 @@
         }
 
         .header-uploaded-img {
-            width: 120%;
-            height: 150%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
         .images-section {
             display: flex;
             justify-content: flex-start; 
-            padding-right: 35px; 
-            margin-bottom: 10px;
-            gap: 10px;
+            padding-right: 5px; 
+            margin-bottom: 15px;
+            gap: 20px;
         }
 
         .qr-photo, .user-photo {
-            width: 115px;
-            height: 115px;
+            width: 110px;
+            height: 110px;
         }
 
-        .user-photo {
-            object-fit: fill;
-            background-color: #eee;
-        }
-
-        .qr-photo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+        .user-photo { object-fit: fill; background-color: #f0f0f0; }
+        .qr-photo img { width: 100%; height: 100%; object-fit: contain; }
 
         .title-badge {
             text-align: center;
             color: var(--balady-green) !important;
             font-size: 26px;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .info-table {
             width: 100%;
             border-collapse: collapse;
-            border: 2px solid #666666;
-            font-size: 12px;
-            background: #ffffff !important;
+            border: 1.5px solid #000000;
+            font-size: 13px;
         }
         
-        .info-table td {
-            padding: 8px 5px;
-            vertical-align: middle;
-            color: #000000 !important;
-        }
+        .info-table td { padding: 7px 6px; vertical-align: middle; }
+        .info-table tr.section-divider { border-bottom: 2px solid #000000; }
+        .label-cell { font-weight: 700; text-align: right; width: 30%; }
+        .colon-cell { text-align: center; width: 5%; }
+        .value-cell { text-align: right; width: 65%; font-weight: 600; }
 
-        .info-table tr.section-divider {
-            border-bottom: 3px solid #666666; 
-            background-color: #f9f9f9 !important;
-        }
-
-        .label-cell {
-            font-weight: 800; 
-            text-align: right;   
-            width: 35%; 
-        }
-
-        .colon-cell {
-            text-align: center;
-            width: 5%;
-            font-weight: 800;
-        }
-
-        .value-cell {
-            text-align: right; 
-            width: 60%;
-            font-weight: 700; 
-        }
-
-        /* --- الصفحة الثالثة (صفحة الجوال بلدي) --- */
+        /* تنسيق الصفحة الثالثة (منصة بلدي المخصصة للجوال) */
         .third-page-balady {
-            background-color: #fafbfc !important;
-            padding: 10px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 3px solid var(--balady-green); 
+            background-color: #ffffff !important;
+            padding: 15px;
+            border: 2px solid var(--balady-green);
         }
             
-        .balady-avatar-center-wrapper {
-            width: 80%;
+        .balady-avatar-wrapper {
+            width: 100%;
             display: flex;
             justify-content: center;
-            align-items: center;
-            margin-bottom: 5px;
-            margin-top: -10px;
+            margin-bottom: 10px;
         }
 
         .balady-avatar-center {
-            width: 65px;
-            height: 75px;
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            background-color: #eee;
+            width: 90px;
+            height: 100px;
+            border: 1px solid #dddddd;
+            background-color: #f9f9f9;
         }
 
-        .balady-avatar-center img {
-            width: 100%;
-            height: 100%;
-            object-fit: fill;
-        }
-
+        .balady-avatar-center img { width: 100%; height: 100%; object-fit: fill; }
         .balady-green-title {
             color: var(--balady-green) !important;
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             text-align: center;
         }
 
         .balady-main-card {
             background: #ffffff !important;
-            border-radius: 6px;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
-            border: 1px solid #ededed;
+            border: 1px solid #e0e0 e0;
+            border-radius: 8px;
             width: 100%;
-            padding: 10px 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 4px;
         }
 
         .balady-group-label {
             color: var(--balady-green) !important;
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 700;
             text-align: right;
-            margin-top: 1px;
+            margin-top: 4px;
         }
 
         .balady-row {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            font-size: 12px;
-            margin: 2px 0;
+            font-size: 13px;
+            border-bottom: 1px dashed #f0f0f0;
+            padding-bottom: 2px;
         }
 
-        .balady-item-name {
-            color: #333333 !important;
-            font-weight: 700;
-            text-align: right;
-            width: 40%;
-        }
+        .balady-item-name { color: #555555; text-align: right; width: 35%; font-weight: 600; }
+        .balady-item-value { color: #000000; text-align: right; width: 65%; font-weight: 700; }
+        .balady-separator { width: 100%; height: 1px; background-color: #dddddd; margin: 6px 0; }
 
-        .balady-item-value {
-            color: #000000 !important;
-            font-weight: 600;
-            text-align: right;
-            width: 60%;
-        }
-
-        .balady-separator {
-            width: 100%;
-            height: 2px;
-            background-color: var(--line-color);
-            margin: 3px 0;
-        }
-
-        .control-panel {
-            display: none;
-            width: 440px;
-            margin-top: 10px;
-        }
-
+        .control-panel { display: none; width: 440px; margin-top: 10px; }
         .btn-pdf {
-            background-color: #d32f2f;
-            color: white !important;
-            border: none;
-            padding: 15px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background-color: #d32f2f; color: white !important; border: none;
+            padding: 15px; border-radius: 6px; cursor: pointer; width: 100%;
+            font-size: 16px; font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <div class="form-container" id="inputFormContainer">
-        <h2>نظام طباعة الشهادات الصحية المطور</h2>
+        <h2>نظام توليد الشهادات الصحية وحل مشكلة الـ QR</h2>
         <form id="certForm" onsubmit="processForm(event)">
             <div class="form-grid">
-                <div class="form-group"><label>صورة الشعار (الهيدر):</label><input type="file" id="inHeaderImg" accept="image/*" required></div>
+                <div class="form-group"><label>شعار الأمانة (الهيدر):</label><input type="file" id="inHeaderImg" accept="image/*" required></div>
                 <div class="form-group"><label>الصورة الشخصية للعامِل:</label><input type="file" id="inUserImg" accept="image/*" required></div>
                 
-                <div class="form-group"><label>رقم الشهادة:</label><input type="text" id="cNo" placeholder="26069-1447" required></div>
-                <div class="form-group"><label>مكان الإصدار:</label><input type="text" id="cPlace" placeholder="أمانة مدينة الرياض" required></div>
+                <div class="form-group"><label>رقم الشهادة:</label><input type="text" id="cNo" placeholder="43243" required></div>
+                <div class="form-group"><label>مكان الإصدار:</label><input type="text" id="cPlace" placeholder="امانة منطقة الرياض" required></div>
                 
-                <div class="form-group"><label>تاريخ الإصدار:</label><input type="text" id="cIssueDate" placeholder="1447/12/21" required></div>
-                <div class="form-group"><label>نهاية الصلاحية:</label><input type="text" id="cExpiryDate" placeholder="1448/12/21" required></div>
+                <div class="form-group"><label>تاريخ الإصدار:</label><input type="text" id="cIssueDate" placeholder="1447/12/24" required></div>
+                <div class="form-group"><label>نهاية الصلاحية:</label><input type="text" id="cExpiryDate" placeholder="1448/12/24" required></div>
                 
-                <div class="form-group full-width"><label>الاسم الكامل للعامِل:</label><input type="text" id="cName" placeholder="MD IQBAL HOSSAIN" required></div>
+                <div class="form-group full-width"><label>الاسم الكامل للعامِل:</label><input type="text" id="cName" placeholder="رياض الجشري" required></div>
                 
-                <div class="form-group"><label>رقم الهوية / الإقامة:</label><input type="text" id="cIdNo" placeholder="2500113531" required></div>
+                <div class="form-group"><label>رقم الهوية / الإقامة:</label><input type="text" id="cIdNo" placeholder="235345" required></div>
                 <div class="form-group"><label>الجنس:</label><input type="text" id="cGender" placeholder="ذكر" required></div>
                 
-                <div class="form-group"><label>الجنسية:</label><input type="text" id="cNat" placeholder="بنغلاديش" required></div>
-                <div class="form-group"><label>المهنة:</label><input type="text" id="cJob" placeholder="عامل مطبخ" required></div>
+                <div class="form-group"><label>الجنسية:</label><input type="text" id="cNat" placeholder="يمني" required></div>
+                <div class="form-group"><label>المهنة:</label><input type="text" id="cJob" placeholder="عامل تحميل وتنزيل" required></div>
                 
-                <div class="form-group"><label>البرنامج التثقيفي:</label><input type="text" id="cProg" placeholder="منشآت الغذاء" required></div>
-                <div class="form-group"><label>تاريخ انتهاء البرنامج:</label><input type="text" id="cProgExp" placeholder="1450/12/28" required></div>
+                <div class="form-group"><label>البرنامج التثقيفي:</label><input type="text" id="cProg" placeholder="مكتبة قرطاسية" required></div>
+                <div class="form-group"><label>تاريخ انتهاء البرنامج:</label><input type="text" id="cProgExp" placeholder="1450/12/12" required></div>
                 
-                <div class="form-group full-width"><label>اسم المنشأة:</label><input type="text" id="cFacName" placeholder="شركة عيادات صفا مكة" required></div>
-                <div class="form-group full-width"><label>رقم رخصة المنشأة:</label><input type="text" id="cFacLic" placeholder="43058039930" required></div>
+                <div class="form-group full-width"><label>اسم المنشأة:</label><input type="text" id="cFacName" placeholder="مؤسسة لؤلؤة النظيم التجارية" required></div>
+                <div class="form-group full-width"><label>رقم رخصة المنشأة:</label><input type="text" id="cFacLic" placeholder="12345678" required></div>
             </div>
-            <button type="submit" class="btn-submit">توليد ومعاينة الـ 3 صفحات</button>
+            <button type="submit" class="btn-submit">توليد ومعاينة الملفات الفورية</button>
         </form>
     </div>
 
@@ -378,16 +293,14 @@
             </table>
         </div>
 
-        <div class="card-page" id="page2" style="display:none;"></div>
-
         <div class="card-page third-page-balady" id="page3">
             <div class="header-image-container">
                 <img id="outHeaderImg3" class="header-uploaded-img" src="">
             </div>
             
-            <div class="balady-avatar-center-wrapper">
+            <div class="balady-avatar-wrapper">
                 <div class="balady-avatar-center">
-                    <img id="outUserImg3" src="">
+                    <img id="outUserImg3" src="" style="width:100%; height:100%;">
                 </div>
             </div>
 
@@ -420,123 +333,105 @@
     </div>
 
     <div class="control-panel" id="controlPanel">
-        <button class="btn-pdf" onclick="buildAbsolutePDF()">حفظ وتحميل الـ PDF النهائي</button>
+        <button class="btn-pdf" onclick="buildAbsolutePDF()">تحميل ملف الـ PDF النهائي</button>
     </div>
 
     <script>
-        // دالة استخراج البيانات الممررة عبر الرابط
-        function getUrlParameter(name) {
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(window.location.search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-        }
-
-        // الفحص عند فتح الصفحة
+        // فحص المتصفح عند التحميل للتأكد من وضع العرض
         window.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            
-            // إذا كان الرابط يحتوي على حزمة البيانات المخصصة لصفحة بلدي
-            if (params.has('cNo') || window.location.href.includes('view=page3')) {
-                document.getElementById('inputFormContainer').style.display = 'none';
-                document.getElementById('previewWrapper').style.display = 'block';
-                document.getElementById('page1').style.display = 'none';
-                document.getElementById('page3').style.display = 'block';
+            if (params.get('view') === 'page3' || localStorage.getItem('active_cert')) {
+                
+                // سحب البيانات المخزنة محلياً فوراً وبشكل موثوق
+                const data = JSON.parse(localStorage.getItem('saved_cert_data') || '{}');
+                
+                if(data.cNo) {
+                    document.getElementById('inputFormContainer').style.display = 'none';
+                    document.getElementById('previewWrapper').style.display = 'block';
+                    document.getElementById('page1').style.display = 'none';
+                    document.getElementById('page3').style.style.display = 'block';
 
-                // حقن البيانات في الحقول من الرابط مباشرة لتظهر فوراً بالجوال
-                document.getElementById('vCertNo').innerText = getUrlParameter('cNo');
-                document.getElementById('vIssueDate').innerText = getUrlParameter('cIDate');
-                document.getElementById('vExpiryDate').innerText = getUrlParameter('cEDate');
-                document.getElementById('vName').innerText = getUrlParameter('name');
-                document.getElementById('vIdNo').innerText = getUrlParameter('idNo');
-                document.getElementById('vGender').innerText = getUrlParameter('gen');
-                document.getElementById('vNat').innerText = getUrlParameter('nat');
-                document.getElementById('vJob').innerText = getUrlParameter('job');
-                document.getElementById('vProg').innerText = getUrlParameter('prog');
-                document.getElementById('vProgExp').innerText = getUrlParameter('pExp');
-                document.getElementById('vFacName').innerText = getUrlParameter('fName');
-                document.getElementById('vFacLic').innerText = getUrlParameter('fLic');
+                    // حقن البيانات في واجهة بلدي
+                    document.getElementById('vCertNo').innerText = data.cNo;
+                    document.getElementById('vIssueDate').innerText = data.cIDate;
+                    document.getElementById('vExpiryDate').innerText = data.cEDate;
+                    document.getElementById('vName').innerText = data.name;
+                    document.getElementById('vIdNo').innerText = data.idNo;
+                    document.getElementById('vGender').innerText = data.gen;
+                    document.getElementById('vNat').innerText = data.nat;
+                    document.getElementById('vJob').innerText = data.job;
+                    document.getElementById('vProg').innerText = data.prog;
+                    document.getElementById('vProgExp').innerText = data.pExp;
+                    document.getElementById('vFacName').innerText = data.fName;
+                    document.getElementById('vFacLic').innerText = data.fLic;
 
-                // استرجاع الصور إذا تم فتحها على نفس المتصفح
-                if(localStorage.getItem('hImg')) document.getElementById('outHeaderImg3').src = localStorage.getItem('hImg');
-                if(localStorage.getItem('uImg')) document.getElementById('outUserImg3').src = localStorage.getItem('uImg');
+                    if(localStorage.getItem('hImg')) document.getElementById('outHeaderImg3').src = localStorage.getItem('hImg');
+                    if(localStorage.getItem('uImg')) document.getElementById('outUserImg3').src = localStorage.getItem('uImg');
+                }
             }
         });
 
         function processForm(event) {
             event.preventDefault();
 
-            const certNo = document.getElementById('cNo').value;
-            const cPlace = document.getElementById('cPlace').value;
-            const cExpiryDate = document.getElementById('cExpiryDate').value;
-            const cName = document.getElementById('cName').value;
-            const cIdNo = document.getElementById('cIdNo').value;
-            const cGender = document.getElementById('cGender').value;
-            const cNat = document.getElementById('cNat').value;
-            const cJob = document.getElementById('cJob').value;
-            const cIssueDate = document.getElementById('cIssueDate').value;
-            const cProg = document.getElementById('cProg').value;
-            const cProgExp = document.getElementById('cProgExp').value;
-            const cFacName = document.getElementById('cFacName').value;
-            const cFacLic = document.getElementById('cFacLic').value;
+            const data = {
+                cNo: document.getElementById('cNo').value,
+                cPlace: document.getElementById('cPlace').value,
+                cEDate: document.getElementById('cExpiryDate').value,
+                name: document.getElementById('cName').value,
+                idNo: document.getElementById('cIdNo').value,
+                gen: document.getElementById('cGender').value,
+                nat: document.getElementById('cNat').value,
+                job: document.getElementById('cJob').value,
+                cIDate: document.getElementById('cIssueDate').value,
+                prog: document.getElementById('cProg').value,
+                pExp: document.getElementById('cProgExp').value,
+                fName: document.getElementById('cFacName').value,
+                fLic: document.getElementById('cFacLic').value
+            };
 
-            // 1. تعبئة الصفحة الأولى
-            document.getElementById('lCertNo').innerText = certNo;
-            document.getElementById('lCertPlace').innerText = cPlace;
-            document.getElementById('lExpiryDate').innerText = cExpiryDate;
-            document.getElementById('lName').innerText = cName;
-            document.getElementById('lIdNo').innerText = cIdNo;
-            document.getElementById('lGender').innerText = cGender;
-            document.getElementById('lNat').innerText = cNat;
-            document.getElementById('lJob').innerText = cJob;
+            // حفظ الحزمة كاملة في ذاكرة المتصفح لمنع اكتظاظ الـ QR
+            localStorage.setItem('saved_cert_data', JSON.stringify(data));
+            localStorage.setItem('active_cert', 'true');
+
+            // تعبئة حقول الصفحة الأولى
+            document.getElementById('lCertNo').innerText = data.cNo;
+            document.getElementById('lCertPlace').innerText = data.cPlace;
+            document.getElementById('lExpiryDate').innerText = data.cEDate;
+            document.getElementById('lName').innerText = data.name;
+            document.getElementById('lIdNo').innerText = data.idNo;
+            document.getElementById('lGender').innerText = data.gen;
+            document.getElementById('lNat').innerText = data.nat;
+            document.getElementById('lJob').innerText = data.job;
         
-            // 2. تعبئة الصفحة الثالثة لمعاينة الـ الكمبيوتر
-            document.getElementById('vCertNo').innerText = certNo;
-            document.getElementById('vIssueDate').innerText = cIssueDate;
-            document.getElementById('vExpiryDate').innerText = cExpiryDate;
-            document.getElementById('vName').innerText = cName;
-            document.getElementById('vIdNo').innerText = cIdNo;
-            document.getElementById('vGender').innerText = cGender;
-            document.getElementById('vNat').innerText = cNat;
-            document.getElementById('vJob').innerText = cJob;
-            document.getElementById('vProg').innerText = cProg;
-            document.getElementById('vProgExp').innerText = cProgExp;
-            document.getElementById('vFacName').innerText = cFacName;
-            document.getElementById('vFacLic').innerText = cFacLic;
+            // تعبئة حقول الصفحة الثالثة
+            document.getElementById('vCertNo').innerText = data.cNo;
+            document.getElementById('vIssueDate').innerText = data.cIDate;
+            document.getElementById('vExpiryDate').innerText = data.cEDate;
+            document.getElementById('vName').innerText = data.name;
+            document.getElementById('vIdNo').innerText = data.idNo;
+            document.getElementById('vGender').innerText = data.gen;
+            document.getElementById('vNat').innerText = data.nat;
+            document.getElementById('vJob').innerText = data.job;
+            document.getElementById('vProg').innerText = data.prog;
+            document.getElementById('vProgExp').innerText = data.pExp;
+            document.getElementById('vFacName').innerText = data.fName;
+            document.getElementById('vFacLic').innerText = data.fLic;
 
-            // 3. بناء الرابط الديناميكي الحامل للبيانات وحقنه داخل الـ QR كود
+            // توليد كود QR "خفيف جداً ونظيف" يفتح الصفحة مباشرة وينبثق منه البيانات
             document.getElementById("outQrImg").innerHTML = "";
-            
-            // سحب الرابط الأساسي للموقع الحالي تلقائياً
-            const baseUrl = window.location.origin + window.location.pathname;
+            const cleanUrl = window.location.origin + window.location.pathname + "?view=page3";
 
-            let queryParams = `?view=page3` +
-                              `&cNo=${encodeURIComponent(certNo)}` +
-                              `&cIDate=${encodeURIComponent(cIssueDate)}` +
-                              `&cEDate=${encodeURIComponent(cExpiryDate)}` +
-                              `&name=${encodeURIComponent(cName)}` +
-                              `&idNo=${encodeURIComponent(cIdNo)}` +
-                              `&gen=${encodeURIComponent(cGender)}` +
-                              `&nat=${encodeURIComponent(cNat)}` +
-                              `&job=${encodeURIComponent(cJob)}` +
-                              `&prog=${encodeURIComponent(cProg)}` +
-                              `&pExp=${encodeURIComponent(cProgExp)}` +
-                              `&fName=${encodeURIComponent(cFacName)}` +
-                              `&fLic=${encodeURIComponent(cFacLic)}`;
-
-            const fullLiveUrl = baseUrl + queryParams;
-
-            // توليد الـ QR كود بالرابط الحامل للبيانات
             new QRCode(document.getElementById("outQrImg"), {
-                text: fullLiveUrl,
-                width: 115,
-                height: 115,
+                text: cleanUrl,
+                width: 110,
+                height: 110,
                 colorDark : "#000000",
                 colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.L
+                correctLevel : QRCode.CorrectLevel.M
             });
 
-            // 4. معالجة وحفظ الصور
+            // معالجة الصور
             const mapping = [
                 { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3', storeKey: 'hImg' },
                 { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3', storeKey: 'uImg' }
@@ -550,10 +445,7 @@
                     reader.onload = function(e) {
                         if(item.view1) document.getElementById(item.view1).src = e.target.result;
                         if(item.view3) document.getElementById(item.view3).src = e.target.result;
-                        
-                        try {
-                            localStorage.setItem(item.storeKey, e.target.result);
-                        } catch(e) {}
+                        localStorage.setItem(item.storeKey, e.target.result);
                         
                         loadedCount++;
                         if(loadedCount === 2) {
@@ -568,16 +460,14 @@
         }
 
         async function buildAbsolutePDF() {
-            // كود الطباعة الافتراضي الخاص بك دون أي تعديل في جودته
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [116, 166] });
             const p1 = document.getElementById('page1');
             const p3 = document.getElementById('page3');
-            const filename = document.getElementById('cNo').value;
-
+            
             p1.style.display = 'block';
             p3.style.display = 'block';
-            const opts = { scale: 4, useCORS: true, logging: false, backgroundColor: '#ffffff' };
+            const opts = { scale: 3, useCORS: true, logging: false, backgroundColor: '#ffffff' };
 
             try {
                 const c1 = await html2canvas(p1, opts);
@@ -585,9 +475,9 @@
                 pdf.addPage([116, 166], 'portrait');
                 const c3 = await html2canvas(p3, opts);
                 pdf.addImage(c3.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
-                pdf.save('Balady_Final_Form_' + filename + '.pdf');
+                pdf.save('Balady_Final_Document.pdf');
             } catch (err) {
-                alert('حدث خطأ أثناء تحميل الملف.');
+                alert('حدث خطأ أثناء تصدير ملف PDF.');
             }
         }
     </script>
