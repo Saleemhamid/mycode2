@@ -35,7 +35,6 @@
         .preview-wrapper { display: none; width: 440px; }
         .card-page { background: #ffffff; width: 440px; height: 630px; padding: 25px 35px; border: 1px solid #dcdcdc; margin-bottom: 20px; overflow: hidden; position: relative; }
         
-        /* إخفاء الصفحة الثالثة في الواجهة العادية */
         #page3 { display: none; }
 
         .header-image-container { width: 100%; height: 70px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
@@ -158,66 +157,78 @@
     </div>
 
     <script>
-        // الكود المطور لاستخراج البيانات من الرابط تلقائياً عند مسح الـ QR بجوال آخر
+        // دالة لفك ضغط النصوص المشفرة بأمان وتجنب مشاكل اللغة العربية
+        function b64DecodeUnicode(str) {
+            return decodeURIComponent(atob(str).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+        }
+
+        // دالة لتشفير النصوص بأمان ودعم اللغة العربية
+        function b64EncodeUnicode(str) {
+            return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+                return String.fromCharCode('0x' + p1);
+            }));
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('data')) {
                 try {
-                    // فك تشفير البيانات القادمة من رابط الـ QR
                     const rawData = urlParams.get('data');
-                    const certData = JSON.parse(decodeURIComponent(atob(rawData)));
+                    const certData = JSON.parse(b64DecodeUnicode(rawData));
 
-                    // إخفاء الفورم والصفحات الأخرى وإظهار الصفحة 3 فقط بكامل بياناتها وصورتها
+                    // إخفاء العناصر غير المطلوبة وإظهار الصفحة 3 فقط
                     document.getElementById('inputFormContainer').style.display = 'none';
                     document.getElementById('previewWrapper').style.display = 'block';
                     document.getElementById('page1').style.display = 'none';
                     document.getElementById('page2').style.display = 'none';
                     document.getElementById('page3').style.display = 'block';
 
-                    // تعبئة البيانات في تصميم الصفحة الثالثة
-                    document.getElementById('vCertNo').innerText = certData.cNo;
-                    document.getElementById('vIssueDate').innerText = certData.cIssueDate;
-                    document.getElementById('vExpiryDate').innerText = certData.cExpiryDate;
-                    document.getElementById('vName').innerText = certData.cName;
-                    document.getElementById('vIdNo').innerText = certData.cIdNo;
-                    document.getElementById('vGender').innerText = certData.cGender;
-                    document.getElementById('vNat').innerText = certData.cNat;
-                    document.getElementById('vJob').innerText = certData.cJob;
-                    document.getElementById('vProg').innerText = certData.cProg;
-                    document.getElementById('vProgExp').innerText = certData.cProgExp;
-                    document.getElementById('vFacName').innerText = certData.cFacName;
-                    document.getElementById('vFacLic').innerText = certData.cFacLic;
+                    // تعبئة البيانات المدخلة بالكامل في حقول الصفحة الثالثة
+                    document.getElementById('vCertNo').innerText = certData.cNo || '';
+                    document.getElementById('vIssueDate').innerText = certData.cIssueDate || '';
+                    document.getElementById('vExpiryDate').innerText = certData.cExpiryDate || '';
+                    document.getElementById('vName').innerText = certData.cName || '';
+                    document.getElementById('vIdNo').innerText = certData.cIdNo || '';
+                    document.getElementById('vGender').innerText = certData.cGender || '';
+                    document.getElementById('vNat').innerText = certData.cNat || '';
+                    document.getElementById('vJob').innerText = certData.cJob || '';
+                    document.getElementById('vProg').innerText = certData.cProg || '';
+                    document.getElementById('vProgExp').innerText = certData.cProgExp || '';
+                    document.getElementById('vFacName').innerText = certData.cFacName || '';
+                    document.getElementById('vFacLic').innerText = certData.cFacLic || '';
 
-                    // استعادة الصور المشفرة وعرضها في مكانها الصحيح
-                    if (certData.headerImg) document.getElementById('outHeaderImg3').src = certData.headerImg;
-                    if (certData.userImg) document.getElementById('outUserImg3').src = certData.userImg;
+                    // استرجاع الصورة الشخصية للعامل
+                    if (certData.userImg) {
+                        document.getElementById('outUserImg3').src = certData.userImg;
+                    }
+                    
+                    // استرجاع صورة الشعار المخزنة في المتصفح تلقائياً
+                    const cachedHeader = localStorage.getItem('cachedHeaderImg');
+                    if (cachedHeader) {
+                        document.getElementById('outHeaderImg3').src = cachedHeader;
+                    }
 
                 } catch (e) {
-                    alert("خطأ في قراءة بيانات كود الـ QR.");
+                    alert("حدث خطأ أثناء جلب تفاصيل الشهادة الصحية البرمجية.");
                 }
             }
         });
 
-        // دالة لمعالجة الصورة وتحجيمها لتفادي تخطي طول الرابط المسموح به
-        function resizeImage(file, maxWidth, maxHeight, callback) {
+        // دالة ذكية لتصغير حجم الصورة الشخصية جداً لتمريرها عبر الرابط بأمان وبدون نقصان
+        function compressUserImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    let width = img.width;
-                    let height = img.height;
-
-                    if (width > height) {
-                        if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
-                    } else {
-                        if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
+                    // تصغير مقاسات الصورة الشخصية لتناسب مساحة العرض وبحجم خفيف جداً لقراءة الـ QR
+                    canvas.width = 65; 
+                    canvas.height = 75;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    callback(canvas.toDataURL('image/jpeg', 0.6)); // ضغط الصورة لـ 60% لتقليل الحجم
+                    ctx.drawImage(img, 0, 0, 65, 75);
+                    callback(canvas.toDataURL('image/jpeg', 0.4)); // ضغط جودة الصورة لـ 40% لضمان نقلها بالرابط
                 };
                 img.src = e.target.result;
             };
@@ -243,7 +254,7 @@
                 cFacLic: document.getElementById('cFacLic').value
             };
 
-            // تحديث حقول المعاينة الفورية عندك بالجهاز
+            // عرض البيانات فورياً في صفحة المعاينة لديك قبل مسح الـ QR
             document.getElementById('lCertNo').innerText = certData.cNo;
             document.getElementById('lCertPlace').innerText = certData.cPlace;
             document.getElementById('lExpiryDate').innerText = certData.cExpiryDate;
@@ -266,35 +277,38 @@
             document.getElementById('vFacName').innerText = certData.cFacName;
             document.getElementById('vFacLic').innerText = certData.cFacLic;
 
-            // معالجة وضغط الصور وإدراجها بالرابط
             const headerFile = document.getElementById('inHeaderImg').files[0];
             const userFile = document.getElementById('inUserImg').files[0];
 
-            resizeImage(headerFile, 200, 80, function(headerBase64) {
-                certData.headerImg = headerBase64;
+            // التعامل مع الشعار وحفظه محلياً لعدم إثقال رابط الـ QR
+            const headerReader = new FileReader();
+            headerReader.onload = function(e) {
+                const headerBase64 = e.target.result;
                 document.getElementById('outHeaderImg1').src = headerBase64;
                 document.getElementById('outHeaderImg3').src = headerBase64;
+                localStorage.setItem('cachedHeaderImg', headerBase64);
 
-                resizeImage(userFile, 120, 120, function(userBase64) {
-                    certData.userImg = userBase64;
-                    document.getElementById('outUserImg1').src = userBase64;
-                    document.getElementById('outUserImg3').src = userBase64;
+                // ضغط الصورة الشخصية وتمريرها بالكامل عبر الرابط مع كافة الحقول المدخلة
+                compressUserImage(userFile, function(compressedUserBase64) {
+                    certData.userImg = compressedUserBase64;
+                    document.getElementById('outUserImg1').src = compressedUserBase64;
+                    document.getElementById('outUserImg3').src = compressedUserBase64;
 
-                    // تشفير الكائن بالكامل وتحويله إلى نص آمن للروابط
-                    const encryptedData = btoa(encodeURIComponent(JSON.stringify(certData)));
+                    // تشفير البيانات بالكامل بما فيها المدخلات والنصوص العربية والصورة الشخصية
+                    const encryptedData = b64EncodeUnicode(JSON.stringify(certData));
                     
-                    // توليد رابط الـ QR الديناميكي الحامل للبيانات بالكامل
                     document.getElementById("outQrImg").innerHTML = "";
                     const liveTrackingUrl = window.location.origin + window.location.pathname + "?data=" + encryptedData;
                     
+                    // توليد كود الـ QR بدقة مخصصة لاستيعاب البيانات المشفرة
                     new QRCode(document.getElementById("outQrImg"), { 
                         text: liveTrackingUrl, 
                         width: 115, 
                         height: 115, 
-                        correctLevel: QRCode.CorrectLevel.L // استخدام المستوى L ليتسع لحجم البيانات الكبير
+                        correctLevel: QRCode.CorrectLevel.L
                     });
 
-                    // إظهار لوحة المعاينة والتحكم
+                    // إظهار النتائج
                     document.getElementById('inputFormContainer').style.display = 'none';
                     document.getElementById('previewWrapper').style.display = 'block';
                     document.getElementById('page1').style.display = 'block';
@@ -302,7 +316,8 @@
                     document.getElementById('page3').style.display = 'none'; 
                     document.getElementById('controlPanel').style.display = 'block';
                 });
-            });
+            };
+            if(headerFile) headerReader.readAsDataURL(headerFile);
         }
 
         async function buildAbsolutePDF() {
