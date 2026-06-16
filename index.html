@@ -35,8 +35,6 @@
         .preview-wrapper { display: none; width: 440px; }
         .card-page { background: #ffffff; width: 440px; height: 630px; padding: 25px 35px; border: 1px solid #dcdcdc; margin-bottom: 20px; overflow: hidden; position: relative; }
         
-        #page3 { display: none; }
-
         .header-image-container { width: 100%; height: 70px; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
         .header-uploaded-img { width: 120%; height: 150%; object-fit: contain; }
         .images-section { display: flex; justify-content: flex-start; padding-right: 35px; margin-bottom: 10px; gap: 15px; align-items: center; }
@@ -57,15 +55,6 @@
         .terms-list li h2 { font-size: 19px; font-weight: 800; display: inline; line-height: 1.5; }
         .terms-list li::before { content: "*"; position: absolute; right: 0; top: 2px; font-weight: bold; font-size: 24px; }
 
-        .third-page-balady { background-color: #fafbfc; padding: 15px; display: flex; flex-direction: column; align-items: center; border: 3px solid var(--balady-green); }
-        .balady-green-title { color: var(--balady-green); font-size: 22px; font-weight: 700; margin-bottom: 12px; }
-        .balady-main-card { background: #ffffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); border: 1px solid #ededed; width: 100%; padding: 12px 15px; }
-        .balady-group-label { color: var(--balady-green); font-size: 12px; font-weight: 700; text-align: right; margin-top: 5px; margin-bottom: 2px; }
-        .balady-row { display: flex; justify-content: space-between; font-size: 13px; padding: 3px 0; }
-        .balady-item-name { color: #555; font-weight: 700; width: 40%; }
-        .balady-item-value { color: var(--text-dark); font-weight: 600; width: 60%; text-align: left; }
-        .balady-separator { width: 100%; height: 2px; background-color: var(--line-color); margin: 6px 0; }
-
         .control-panel { display: none; width: 440px; margin-top: 10px; }
         .btn-pdf { background-color: #d32f2f; color: white; border: none; padding: 15px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; }
     </style>
@@ -83,7 +72,7 @@
                 <div class="form-group"><label>تاريخ الإصدار:</label><input type="text" id="cIssueDate" placeholder="1447/12/21" required></div>
                 <div class="form-group"><label>نهاية الصلاحية:</label><input type="text" id="cExpiryDate" placeholder="666" required></div>
                 <div class="form-group full-width"><label>الاسم الكامل للعامِل:</label><input type="text" id="cName" placeholder="رياض الجشري" required></div>
-                <div class="form-group"><label>رقم الهوية / الإقامة:</label><input type="text" id="cIdNo" placeholder="2500113531" required></div>
+                <div class="form-group"><label>رقم الهوية / الإقامة:</label><input type="text" id="cIdNo" placeholder="235345" required></div>
                 <div class="form-group"><label>الجنس:</label><input type="text" id="cGender" placeholder="ذكر" required></div>
                 <div class="form-group"><label>الجنسية:</label><input type="text" id="cNat" placeholder="يمني" required></div>
                 <div class="form-group"><label>المهنة:</label><input type="text" id="cJob" placeholder="عامل" required></div>
@@ -122,30 +111,6 @@
                 <li><h2>للتأكد من سلامة الشهادة يرجى زيارة موقع أمانة منطقة الرياض</h2></li>
             </ul>
         </div>
-
-        <div class="card-page third-page-balady" id="page3">
-            <div class="header-image-container"><img id="outHeaderImg3" class="header-uploaded-img" src=""></div>
-            <div class="balady-green-title">تفاصيل الشهادة الصحية الإلكترونية</div>
-            <div class="balady-main-card">
-                <div class="balady-group-label">بيانات الشهادة:</div>
-                <div class="balady-row"><span class="balady-item-name">رقم الشهادة</span><span class="balady-item-value" id="vCertNo"></span></div>
-                <div class="balady-row"><span class="balady-item-name">تاريخ الإصدار</span><span class="balady-item-value" id="vIssueDate"></span></div>
-                <div class="balady-row"><span class="balady-item-name">نهاية الصلاحية</span><span class="balady-item-value" id="vExpiryDate"></span></div>
-                <div class="balady-separator"></div>
-                <div class="balady-group-label">بيانات صاحب الشهادة:</div>
-                <div class="balady-row"><span class="balady-item-name">الاسم</span><span class="balady-item-value" id="vName"></span></div>
-                <div class="balady-row"><span class="balady-item-name">رقم الهوية</span><span class="balady-item-value" id="vIdNo"></span></div>
-                <div class="balady-row"><span class="balady-item-name">الجنس</span><span class="balady-item-value" id="vGender"></span></div>
-                <div class="balady-row"><span class="balady-item-name">الجنسية</span><span class="balady-item-value" id="vNat"></span></div>
-                <div class="balady-row"><span class="balady-item-name">المهنة</span><span class="balady-item-value" id="vJob"></span></div>
-                <div class="balady-row"><span class="balady-item-name">البرنامج التثقيفي</span><span class="balady-item-value" id="vProg"></span></div>
-                <div class="balady-row"><span class="balady-item-name">تاريخ انتهاء البرنامج</span><span class="balady-item-value" id="vProgExp"></span></div>
-                <div class="balady-separator"></div>
-                <div class="balady-group-label">بيانات المنشأة:</div>
-                <div class="balady-row"><span class="balady-item-name">اسم المنشأة</span><span class="balady-item-value" id="vFacName"></span></div>
-                <div class="balady-row"><span class="balady-item-name">رقم رخصة المنشأة</span><span class="balady-item-value" id="vFacLic"></span></div>
-            </div>
-        </div>
     </div>
 
     <div class="control-panel" id="controlPanel">
@@ -153,95 +118,33 @@
     </div>
 
     <script>
-        // دالة فك التشفير الآمنة للنصوص العربية
-        function decodeArabic(str) {
-            try { return decodeURIComponent(escape(atob(str))); } catch(e) { return decodeURIComponent(str); }
-        }
-
-        // دالة تشفير آمنة وخفيفة للنصوص فقط
-        function encodeArabic(str) {
-            return btoa(unescape(encodeURIComponent(str)));
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('info')) {
-                try {
-                    const rawData = urlParams.get('info');
-                    const certData = JSON.parse(decodeArabic(rawData));
-
-                    // الانتقال المباشر لصفحة الفحص (الصفحة الثالثة) للتحقق من البيانات
-                    document.getElementById('inputFormContainer').style.display = 'none';
-                    document.getElementById('previewWrapper').style.display = 'block';
-                    document.getElementById('page1').style.display = 'none';
-                    document.getElementById('page2').style.display = 'none';
-                    document.getElementById('page3').style.display = 'block';
-
-                    // تعبئة البيانات المفحوصة بالكامل من الرابط
-                    document.getElementById('vCertNo').innerText = certData.cNo || '';
-                    document.getElementById('vIssueDate').innerText = certData.cIssueDate || '';
-                    document.getElementById('vExpiryDate').innerText = certData.cExpiryDate || '';
-                    document.getElementById('vName').innerText = certData.cName || '';
-                    document.getElementById('vIdNo').innerText = certData.cIdNo || '';
-                    document.getElementById('vGender').innerText = certData.cGender || '';
-                    document.getElementById('vNat').innerText = certData.cNat || '';
-                    document.getElementById('vJob').innerText = certData.cJob || '';
-                    document.getElementById('vProg').innerText = certData.cProg || '';
-                    document.getElementById('vProgExp').innerText = certData.cProgExp || '';
-                    document.getElementById('vFacName').innerText = certData.cFacName || '';
-                    document.getElementById('vFacLic').innerText = certData.cFacLic || '';
-
-                    // عرض شعار افتراضي أو ثابت عند الفحص الخارجي
-                    const savedHeader = localStorage.getItem('local_h_img');
-                    if (savedHeader) document.getElementById('outHeaderImg3').src = savedHeader;
-
-                } catch (e) {
-                    alert("خطأ أثناء قراءة كود التحقق.");
-                }
-            }
-        });
-
         function processForm(event) {
             event.preventDefault();
             
-            const certData = {
-                cNo: document.getElementById('cNo').value,
-                cPlace: document.getElementById('cPlace').value,
-                cIssueDate: document.getElementById('cIssueDate').value,
-                cExpiryDate: document.getElementById('cExpiryDate').value,
-                cName: document.getElementById('cName').value,
-                cIdNo: document.getElementById('cIdNo').value,
-                cGender: document.getElementById('cGender').value,
-                cNat: document.getElementById('cNat').value,
-                cJob: document.getElementById('cJob').value,
-                cProg: document.getElementById('cProg').value,
-                cProgExp: document.getElementById('cProgExp').value,
-                cFacName: document.getElementById('cFacName').value,
-                cFacLic: document.getElementById('cFacLic').value
-            };
+            // جلب القيم من المدخلات
+            const cNo = document.getElementById('cNo').value;
+            const cPlace = document.getElementById('cPlace').value;
+            const cIssueDate = document.getElementById('cIssueDate').value;
+            const cExpiryDate = document.getElementById('cExpiryDate').value;
+            const cName = document.getElementById('cName').value;
+            const cIdNo = document.getElementById('cIdNo').value;
+            const cGender = document.getElementById('cGender').value;
+            const cNat = document.getElementById('cNat').value;
+            const cJob = document.getElementById('cJob').value;
+            const cProg = document.getElementById('cProg').value;
+            const cProgExp = document.getElementById('cProgExp').value;
+            const cFacName = document.getElementById('cFacName').value;
+            const cFacLic = document.getElementById('cFacLic').value;
 
-            // إدخال فوري للبيانات على واجهة العرض
-            document.getElementById('lCertNo').innerText = certData.cNo;
-            document.getElementById('lCertPlace').innerText = certData.cPlace;
-            document.getElementById('lExpiryDate').innerText = certData.cExpiryDate;
-            document.getElementById('lName').innerText = certData.cName;
-            document.getElementById('lIdNo').innerText = certData.cIdNo;
-            document.getElementById('lGender').innerText = certData.cGender;
-            document.getElementById('lNat').innerText = certData.cNat;
-            document.getElementById('lJob').innerText = certData.cJob;
-
-            document.getElementById('vCertNo').innerText = certData.cNo;
-            document.getElementById('vIssueDate').innerText = certData.cIssueDate;
-            document.getElementById('vExpiryDate').innerText = certData.cExpiryDate;
-            document.getElementById('vName').innerText = certData.cName;
-            document.getElementById('vIdNo').innerText = certData.cIdNo;
-            document.getElementById('vGender').innerText = certData.cGender;
-            document.getElementById('vNat').innerText = certData.cNat;
-            document.getElementById('vJob').innerText = certData.cJob;
-            document.getElementById('vProg').innerText = certData.cProg;
-            document.getElementById('vProgExp').innerText = certData.cProgExp;
-            document.getElementById('vFacName').innerText = certData.cFacName;
-            document.getElementById('vFacLic').innerText = certData.cFacLic;
+            // تعبئة واجهة الشهادة الأولى فوراً
+            document.getElementById('lCertNo').innerText = cNo;
+            document.getElementById('lCertPlace').innerText = cPlace;
+            document.getElementById('lExpiryDate').innerText = cExpiryDate;
+            document.getElementById('lName').innerText = cName;
+            document.getElementById('lIdNo').innerText = cIdNo;
+            document.getElementById('lGender').innerText = cGender;
+            document.getElementById('lNat').innerText = cNat;
+            document.getElementById('lJob').innerText = cJob;
 
             const headerFile = document.getElementById('inHeaderImg').files[0];
             const userFile = document.getElementById('inUserImg').files[0];
@@ -250,25 +153,48 @@
             function done() {
                 loaded++;
                 if(loaded === 2) {
-                    // هنا السر: نرسل النصوص فقط لتوليد كود QR خفيف وواضح جداً وقابل للمسح فوراً
-                    const textOnlyData = encodeArabic(JSON.stringify(certData));
+                    
+                    // صياغة النص النهائي الذي سيظهر على شاشة الجوال عند مسح الـ QR فوراً
+                    const textDataForQR = 
+                        `وزارة الشؤون البلدية والقروية - الأمانة\n` +
+                        `-----------------------------------\n` +
+                        `• بيانات الشهادة الصحية الإلكترونية •\n` +
+                        `-----------------------------------\n` +
+                        `رقم الشهادة: ${cNo}\n` +
+                        `مكان الإصدار: ${cPlace}\n` +
+                        `تاريخ الإصدار: ${cIssueDate}\n` +
+                        `نهاية الصلاحية: ${cExpiryDate}\n` +
+                        `-----------------------------------\n` +
+                        `• بيانات صاحب الشهادة •\n` +
+                        `الاسم: ${cName}\n` +
+                        `رقم الهوية/الإقامة: ${cIdNo}\n` +
+                        `الجنس: ${cGender}\n` +
+                        `الجنسية: ${cNat}\n` +
+                        `المهنة: ${cJob}\n` +
+                        `البرنامج التثقيفي: ${cProg}\n` +
+                        `انتهاء البرنامج: ${cProgExp}\n` +
+                        `-----------------------------------\n` +
+                        `• بيانات المنشأة •\n` +
+                        `اسم المنشأة: ${cFacName}\n` +
+                        `رقم رخصة المنشأة: ${cFacLic}\n` +
+                        `-----------------------------------\n` +
+                        `الوضع الحالي: الشهادة صحيحة ومعتمدة.`;
+
                     document.getElementById("outQrImg").innerHTML = "";
                     
-                    const trackingUrl = window.location.origin + window.location.pathname + "?info=" + textOnlyData;
-                    
+                    // توليد كود الـ QR المستقل بنجاح
                     new QRCode(document.getElementById("outQrImg"), { 
-                        text: trackingUrl, 
+                        text: textDataForQR, 
                         width: 115, 
                         height: 115, 
-                        correctLevel: QRCode.CorrectLevel.H // أعلى دقة ووضوح للقراءة السريعة
+                        correctLevel: QRCode.CorrectLevel.L
                     });
 
-                    // التبديل إلى وضع المعاينة والطباعة
+                    // التبديل لواجهة المعاينة وحفظ الـ PDF
                     document.getElementById('inputFormContainer').style.display = 'none';
                     document.getElementById('previewWrapper').style.display = 'block';
                     document.getElementById('page1').style.display = 'block';
                     document.getElementById('page2').style.display = 'block';
-                    document.getElementById('page3').style.display = 'none'; 
                     document.getElementById('controlPanel').style.display = 'block';
                 }
             }
@@ -276,8 +202,6 @@
             if(headerFile) {
                 const r = new FileReader(); r.onload = function(e) {
                     document.getElementById('outHeaderImg1').src = e.target.result;
-                    document.getElementById('outHeaderImg3').src = e.target.result;
-                    localStorage.setItem('local_h_img', e.target.result);
                     done();
                 }; r.readAsDataURL(headerFile);
             } else done();
@@ -293,25 +217,17 @@
         async function buildAbsolutePDF() {
             const { jsPDF } = window.jspdf;
             const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: [116, 166] });
-            const p1 = document.getElementById('page1'), p2 = document.getElementById('page2'), p3 = document.getElementById('page3');
+            const p1 = document.getElementById('page1'), p2 = document.getElementById('page2');
             const filename = document.getElementById('cNo').value;
 
-            p1.style.display = 'block'; p2.style.display = 'block'; p3.style.display = 'block';
+            p1.style.display = 'block'; p2.style.display = 'block';
             const opts = { scale: 4, useCORS: true, logging: false, backgroundColor: '#ffffff' };
 
             try {
                 const c1 = await html2canvas(p1, opts); pdf.addImage(c1.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
                 pdf.addPage([116, 166], 'portrait');
                 const c2 = await html2canvas(p2, opts); pdf.addImage(c2.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
-                pdf.addPage([116, 166], 'portrait');
-                const c3 = await html2canvas(p3, opts); pdf.addImage(c3.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
                 pdf.save('Balady_Final_Form_' + filename + '.pdf');
-
-                if (window.location.search.includes('info=')) {
-                    p1.style.display = 'none'; p2.style.display = 'none';
-                } else {
-                    p3.style.display = 'none';
-                }
             } catch (err) { alert('حدث مشكلة في التصدير، يرجى إعادة المحاولة.'); }
         }
     </script>
