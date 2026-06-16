@@ -106,9 +106,9 @@
             <div class="images-section"><div id="outQrImg" class="qr-photo"></div><img id="outUserImg1" class="user-photo"></div>
             <div class="title-badge">شهادة صحية</div>
             <table class="info-table">
-                <tr><td class="label-cell">رقم الشهادة</td><td class="colon-cell">:</td><td class="value-cell" id="lCertNo">4425</td></tr>
-                <tr><td class="label-cell">مكان الإصدار</td><td class="colon-cell">:</td><td class="value-cell" id="lCertPlace">الرياض </td></tr>
-                <tr class="section-divider"><td class="label-cell">نهاية الصلاحية</td><td class="colon-cell">:</td><td class="value-cell" id="lExpiryDate">54551</td></tr>
+                <tr><td class="label-cell">رقم الشهادة</td><td class="colon-cell">:</td><td class="value-cell" id="lCertNo"></td></tr>
+                <tr><td class="label-cell">مكان الإصدار</td><td class="colon-cell">:</td><td class="value-cell" id="lCertPlace"></td></tr>
+                <tr class="section-divider"><td class="label-cell">نهاية الصلاحية</td><td class="colon-cell">:</td><td class="value-cell" id="lExpiryDate"></td></tr>
                 <tr><td class="label-cell">الاسم</td><td class="colon-cell">:</td><td class="value-cell" id="lName"></td></tr>
                 <tr><td class="label-cell">رقم الهوية</td><td class="colon-cell">:</td><td class="value-cell" id="lIdNo"></td></tr>
                 <tr><td class="label-cell">الجنس</td><td class="colon-cell">:</td><td class="value-cell" id="lGender"></td></tr>
@@ -158,73 +158,150 @@
     </div>
 
     <script>
-        // التعامل مع رابط الـ QR عند فتحه
+        // الكود المطور لاستخراج البيانات من الرابط تلقائياً عند مسح الـ QR بجوال آخر
         window.addEventListener('DOMContentLoaded', () => {
-            if (window.location.href.includes('view=page3')) {
-                document.getElementById('inputFormContainer').style.display = 'none';
-                document.getElementById('previewWrapper').style.display = 'block';
-                document.getElementById('page1').style.display = 'none';
-                document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'block';
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('data')) {
+                try {
+                    // فك تشفير البيانات القادمة من رابط الـ QR
+                    const rawData = urlParams.get('data');
+                    const certData = JSON.parse(decodeURIComponent(atob(rawData)));
+
+                    // إخفاء الفورم والصفحات الأخرى وإظهار الصفحة 3 فقط بكامل بياناتها وصورتها
+                    document.getElementById('inputFormContainer').style.display = 'none';
+                    document.getElementById('previewWrapper').style.display = 'block';
+                    document.getElementById('page1').style.display = 'none';
+                    document.getElementById('page2').style.display = 'none';
+                    document.getElementById('page3').style.display = 'block';
+
+                    // تعبئة البيانات في تصميم الصفحة الثالثة
+                    document.getElementById('vCertNo').innerText = certData.cNo;
+                    document.getElementById('vIssueDate').innerText = certData.cIssueDate;
+                    document.getElementById('vExpiryDate').innerText = certData.cExpiryDate;
+                    document.getElementById('vName').innerText = certData.cName;
+                    document.getElementById('vIdNo').innerText = certData.cIdNo;
+                    document.getElementById('vGender').innerText = certData.cGender;
+                    document.getElementById('vNat').innerText = certData.cNat;
+                    document.getElementById('vJob').innerText = certData.cJob;
+                    document.getElementById('vProg').innerText = certData.cProg;
+                    document.getElementById('vProgExp').innerText = certData.cProgExp;
+                    document.getElementById('vFacName').innerText = certData.cFacName;
+                    document.getElementById('vFacLic').innerText = certData.cFacLic;
+
+                    // استعادة الصور المشفرة وعرضها في مكانها الصحيح
+                    if (certData.headerImg) document.getElementById('outHeaderImg3').src = certData.headerImg;
+                    if (certData.userImg) document.getElementById('outUserImg3').src = certData.userImg;
+
+                } catch (e) {
+                    alert("خطأ في قراءة بيانات كود الـ QR.");
+                }
             }
         });
 
+        // دالة لمعالجة الصورة وتحجيمها لتفادي تخطي طول الرابط المسموح به
+        function resizeImage(file, maxWidth, maxHeight, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                    } else {
+                        if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    callback(canvas.toDataURL('image/jpeg', 0.6)); // ضغط الصورة لـ 60% لتقليل الحجم
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
         function processForm(event) {
             event.preventDefault();
-            const certNo = document.getElementById('cNo').value;
+            
+            const certData = {
+                cNo: document.getElementById('cNo').value,
+                cPlace: document.getElementById('cPlace').value,
+                cIssueDate: document.getElementById('cIssueDate').value,
+                cExpiryDate: document.getElementById('cExpiryDate').value,
+                cName: document.getElementById('cName').value,
+                cIdNo: document.getElementById('cIdNo').value,
+                cGender: document.getElementById('cGender').value,
+                cNat: document.getElementById('cNat').value,
+                cJob: document.getElementById('cJob').value,
+                cProg: document.getElementById('cProg').value,
+                cProgExp: document.getElementById('cProgExp').value,
+                cFacName: document.getElementById('cFacName').value,
+                cFacLic: document.getElementById('cFacLic').value
+            };
 
-            // تحديث الحقول
-            document.getElementById('lCertNo').innerText = certNo;
-            document.getElementById('lCertPlace').innerText = document.getElementById('cPlace').value;
-            document.getElementById('lExpiryDate').innerText = document.getElementById('cExpiryDate').value;
-            document.getElementById('lName').innerText = document.getElementById('cName').value;
-            document.getElementById('lIdNo').innerText = document.getElementById('cIdNo').value;
-            document.getElementById('lGender').innerText = document.getElementById('cGender').value;
-            document.getElementById('lNat').innerText = document.getElementById('cNat').value;
-            document.getElementById('lJob').innerText = document.getElementById('cJob').value;
-        
-            document.getElementById('vCertNo').innerText = certNo;
-            document.getElementById('vIssueDate').innerText = document.getElementById('cIssueDate').value;
-            document.getElementById('vExpiryDate').innerText = document.getElementById('cExpiryDate').value;
-            document.getElementById('vName').innerText = document.getElementById('cName').value;
-            document.getElementById('vIdNo').innerText = document.getElementById('cIdNo').value;
-            document.getElementById('vGender').innerText = document.getElementById('cGender').value;
-            document.getElementById('vNat').innerText = document.getElementById('cNat').value;
-            document.getElementById('vJob').innerText = document.getElementById('cJob').value;
-            document.getElementById('vProg').innerText = document.getElementById('cProg').value;
-            document.getElementById('vProgExp').innerText = document.getElementById('cProgExp').value;
-            document.getElementById('vFacName').innerText = document.getElementById('cFacName').value;
-            document.getElementById('vFacLic').innerText = document.getElementById('cFacLic').value;
+            // تحديث حقول المعاينة الفورية عندك بالجهاز
+            document.getElementById('lCertNo').innerText = certData.cNo;
+            document.getElementById('lCertPlace').innerText = certData.cPlace;
+            document.getElementById('lExpiryDate').innerText = certData.cExpiryDate;
+            document.getElementById('lName').innerText = certData.cName;
+            document.getElementById('lIdNo').innerText = certData.cIdNo;
+            document.getElementById('lGender').innerText = certData.cGender;
+            document.getElementById('lNat').innerText = certData.cNat;
+            document.getElementById('lJob').innerText = certData.cJob;
 
-            document.getElementById("outQrImg").innerHTML = "";
-            const liveTrackingUrl = window.location.origin + window.location.pathname + "?view=page3";
-            new QRCode(document.getElementById("outQrImg"), { text: liveTrackingUrl, width: 115, height: 115, correctLevel: QRCode.CorrectLevel.H });
+            document.getElementById('vCertNo').innerText = certData.cNo;
+            document.getElementById('vIssueDate').innerText = certData.cIssueDate;
+            document.getElementById('vExpiryDate').innerText = certData.cExpiryDate;
+            document.getElementById('vName').innerText = certData.cName;
+            document.getElementById('vIdNo').innerText = certData.cIdNo;
+            document.getElementById('vGender').innerText = certData.cGender;
+            document.getElementById('vNat').innerText = certData.cNat;
+            document.getElementById('vJob').innerText = certData.cJob;
+            document.getElementById('vProg').innerText = certData.cProg;
+            document.getElementById('vProgExp').innerText = certData.cProgExp;
+            document.getElementById('vFacName').innerText = certData.cFacName;
+            document.getElementById('vFacLic').innerText = certData.cFacLic;
 
-            const mapping = [
-                { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3' },
-                { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3' }
-            ];
+            // معالجة وضغط الصور وإدراجها بالرابط
+            const headerFile = document.getElementById('inHeaderImg').files[0];
+            const userFile = document.getElementById('inUserImg').files[0];
 
-            let loadedCount = 0;
-            mapping.forEach(item => {
-                const file = document.getElementById(item.input).files[0];
-                if(file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        if(item.view1) document.getElementById(item.view1).src = e.target.result;
-                        if(item.view3) document.getElementById(item.view3).src = e.target.result;
-                        loadedCount++;
-                        if(loadedCount === 2) {
-                            document.getElementById('inputFormContainer').style.display = 'none';
-                            document.getElementById('previewWrapper').style.display = 'block';
-                            document.getElementById('page1').style.display = 'block';
-                            document.getElementById('page2').style.display = 'block';
-                            document.getElementById('page3').style.display = 'none'; // الصفحة 3 مخفية
-                            document.getElementById('controlPanel').style.display = 'block';
-                        }
-                    }
-                    reader.readAsDataURL(file);
-                }
+            resizeImage(headerFile, 200, 80, function(headerBase64) {
+                certData.headerImg = headerBase64;
+                document.getElementById('outHeaderImg1').src = headerBase64;
+                document.getElementById('outHeaderImg3').src = headerBase64;
+
+                resizeImage(userFile, 120, 120, function(userBase64) {
+                    certData.userImg = userBase64;
+                    document.getElementById('outUserImg1').src = userBase64;
+                    document.getElementById('outUserImg3').src = userBase64;
+
+                    // تشفير الكائن بالكامل وتحويله إلى نص آمن للروابط
+                    const encryptedData = btoa(encodeURIComponent(JSON.stringify(certData)));
+                    
+                    // توليد رابط الـ QR الديناميكي الحامل للبيانات بالكامل
+                    document.getElementById("outQrImg").innerHTML = "";
+                    const liveTrackingUrl = window.location.origin + window.location.pathname + "?data=" + encryptedData;
+                    
+                    new QRCode(document.getElementById("outQrImg"), { 
+                        text: liveTrackingUrl, 
+                        width: 115, 
+                        height: 115, 
+                        correctLevel: QRCode.CorrectLevel.L // استخدام المستوى L ليتسع لحجم البيانات الكبير
+                    });
+
+                    // إظهار لوحة المعاينة والتحكم
+                    document.getElementById('inputFormContainer').style.display = 'none';
+                    document.getElementById('previewWrapper').style.display = 'block';
+                    document.getElementById('page1').style.display = 'block';
+                    document.getElementById('page2').style.display = 'block';
+                    document.getElementById('page3').style.display = 'none'; 
+                    document.getElementById('controlPanel').style.display = 'block';
+                });
             });
         }
 
@@ -234,7 +311,6 @@
             const p1 = document.getElementById('page1'), p2 = document.getElementById('page2'), p3 = document.getElementById('page3');
             const filename = document.getElementById('cNo').value;
 
-            // إظهار الصفحات للطباعة
             p1.style.display = 'block'; p2.style.display = 'block'; p3.style.display = 'block';
             const opts = { scale: 4, useCORS: true, logging: false, backgroundColor: '#ffffff' };
 
@@ -246,8 +322,7 @@
                 const c3 = await html2canvas(p3, opts); pdf.addImage(c3.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
                 pdf.save('Balady_Final_Form_' + filename + '.pdf');
 
-                // إعادة الإخفاء بعد التوليد
-                if (window.location.href.includes('view=page3')) {
+                if (window.location.search.includes('data=')) {
                     p1.style.display = 'none'; p2.style.display = 'none';
                 } else {
                     p3.style.display = 'none';
