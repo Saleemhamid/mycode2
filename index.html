@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الشهادات الصحية المطور</title>
+    <title>نظام الشهادات الصحية  المطور</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -158,11 +158,13 @@
     </div>
 
     <script>
+        // دالة لاستخراج متغيرات الرابط (URL Parameters)
         function getUrlParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param) || "";
         }
 
+        // التعامل مع رابط الـ QR عند فتحه وفك التشفير وعرض البيانات
         window.addEventListener('DOMContentLoaded', () => {
             if (getUrlParam('view') === 'page3') {
                 document.getElementById('inputFormContainer').style.display = 'none';
@@ -171,6 +173,7 @@
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
 
+                // تعبئة البيانات الآتية من الباركود في الصفحة 3 مباشرة
                 document.getElementById('vCertNo').innerText = getUrlParam('cNo');
                 document.getElementById('vIssueDate').innerText = getUrlParam('cIssueDate');
                 document.getElementById('vExpiryDate').innerText = getUrlParam('cExpiryDate');
@@ -184,6 +187,7 @@
                 document.getElementById('vFacName').innerText = getUrlParam('cFacName');
                 document.getElementById('vFacLic').innerText = getUrlParam('cFacLic');
 
+                // استرجاع الصور المخزنة مؤقتاً في الرابط إن وجدت
                 if(getUrlParam('hImg')) document.getElementById('outHeaderImg3').src = getUrlParam('hImg');
                 if(getUrlParam('uImg')) document.getElementById('outUserImg3').src = getUrlParam('uImg');
             }
@@ -206,6 +210,7 @@
             const cFacName = document.getElementById('cFacName').value;
             const cFacLic = document.getElementById('cFacLic').value;
 
+            // تحديث واجهة العرض المحلية (Preview)
             document.getElementById('lCertNo').innerText = cNo;
             document.getElementById('lCertPlace').innerText = cPlace;
             document.getElementById('lExpiryDate').innerText = cExpiryDate;
@@ -228,12 +233,15 @@
             document.getElementById('vFacName').innerText = cFacName;
             document.getElementById('vFacLic').innerText = cFacLic;
 
+            // تجهيز وقراءة الصور أولاً
             const mapping = [
                 { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3' },
                 { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3' }
             ];
 
             let loadedCount = 0;
+            let headerBase64 = "";
+            let userBase64 = "";
 
             mapping.forEach(item => {
                 const file = document.getElementById(item.input).files[0];
@@ -242,34 +250,41 @@
                     reader.onload = function(e) {
                         if(item.view1) document.getElementById(item.view1).src = e.target.result;
                         if(item.view3) document.getElementById(item.view3).src = e.target.result;
+                        
+                        if(item.input === 'inHeaderImg') headerBase64 = e.target.result;
+                        if(item.input === 'inUserImg') userBase64 = e.target.result;
 
                         loadedCount++;
                         if(loadedCount === 2) {
+                            // تم تحميل كافة الصور، الآن ننشئ الرابط الشامل للبيانات والباركود
                             document.getElementById("outQrImg").innerHTML = "";
                             
-                            // تعديل طريقة صياغة البيانات لتظهر كنص منسق واضح عند المسح مهما كبر حجمها
-                            const qrTextData = 
-                                `الشهادة الصحية المعتمدة\n` +
-                                `------------------------\n` +
-                                `رقم الشهادة: ${cNo}\n` +
-                                `مكان الإصدار: ${cPlace}\n` +
-                                `تاريخ الإصدار: ${cIssueDate}\n` +
-                                `نهاية الصلاحية: ${cExpiryDate}\n` +
-                                `الاسم: ${cName}\n` +
-                                `الهوية/الإقامة: ${cIdNo}\n` +
-                                `الجنسية: ${cNat} (${cGender})\n` +
-                                `المهنة: ${cJob}\n` +
-                                `المنشأة: ${cFacName}\n` +
-                                `رخصة المنشأة: ${cFacLic}\n` +
-                                `البرنامج التثقيفي: ${cProg}\n` +
-                                `انتهاء البرنامج: ${cProgExp}`;
+                            // تشفير القيم لضمان سلامتها داخل الرابط وحل مشكلة المسافات واللغة العربية
+                            const params = new URLSearchParams({
+                                view: 'page3',
+                                cNo: cNo,
+                                cPlace: cPlace,
+                                cExpiryDate: cExpiryDate,
+                                cName: cName,
+                                cIdNo: cIdNo,
+                                cGender: cGender,
+                                cNat: cNat,
+                                cJob: cJob,
+                                cIssueDate: cIssueDate,
+                                cProg: cProg,
+                                cProgExp: cProgExp,
+                                cFacName: cFacName,
+                                cFacLic: cFacLic
+                            });
 
-                            // توليد الـ QR المطور بمستوى قراءة منخفض المربعات (H) لاستيعاب النصوص الطويلة جداً وسرعة الاستجابة
+                            const liveTrackingUrl = window.location.origin + window.location.pathname + "?" + params.toString();
+                            
+                            // التعديل الوحيد هنا: رفع مستوى تصحيح الأخطاء لـ H لضمان عدم تلف الكود مع البيانات الكبيرة
                             new QRCode(document.getElementById("outQrImg"), { 
-                                text: qrTextData, 
+                                text: liveTrackingUrl, 
                                 width: 115, 
                                 height: 115, 
-                                correctLevel: QRCode.CorrectLevel.H 
+                                correctLevel: QRCode.CorrectLevel.H
                             });
 
                             document.getElementById('inputFormContainer').style.display = 'none';
