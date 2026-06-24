@@ -205,7 +205,13 @@
                         if(loadedCount === 2) {
                             document.getElementById("outQrImg").innerHTML = "";
                             
-                            const liveTrackingUrl = window.location.origin + window.location.pathname.replace('index.html', '') + "page3.html";
+                            // إصلاح طريقة استخراج الرابط بشكل آمن وصحيح لمنع الأخطاء عند المسح
+                            const currentHref = window.location.href;
+                            const urlObj = new URL(currentHref);
+                            const pathSegments = urlObj.pathname.split('/');
+                            pathSegments[pathSegments.length - 1] = 'page3.html';
+                            urlObj.pathname = pathSegments.join('/');
+                            const liveTrackingUrl = urlObj.toString();
                             
                             new QRCode(document.getElementById("outQrImg"), { text: liveTrackingUrl, width: 115, height: 115, correctLevel: QRCode.CorrectLevel.M });
 
