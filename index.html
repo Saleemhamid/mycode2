@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>نظام الشهادات المدرسية المطور</title>
+    <title>نظام الشهادات الصحية  المطور</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -29,7 +29,7 @@
         .form-group { margin-bottom: 10px; }
         .form-group.full-width { grid-column: span 2; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; font-size: 14px; background-color: #ffffff; }
+        .form-group input { width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; font-size: 14px; }
         .btn-submit { background-color: var(--balady-green); color: white; border: none; padding: 14px 20px; border-radius: 6px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; margin-top: 15px; }
 
         .preview-wrapper { display: none; width: 440px; }
@@ -81,57 +81,20 @@
         <form id="certForm" onsubmit="processForm(event)">
             <div class="form-grid">
                 <div class="form-group"><label>صورة الشعار (الهيدر):</label><input type="file" id="inHeaderImg" accept="image/*" required></div>
-                <div class="form-group"><label>الصورة الشخصية لطالب :</label><input type="file" id="inUserImg" accept="image/*" required></div>
+                <div class="form-group"><label>الصورة الشخصية للعامل  :</label><input type="file" id="inUserImg" accept="image/*" required></div>
                 <div class="form-group"><label>رقم الشهادة:</label><input type="text" id="cNo" placeholder="26069-1447" required></div>
                 <div class="form-group"><label>مكان الإصدار:</label><input type="text" id="cPlace" placeholder=" " required></div>
-                
-                <div class="form-group"><label>تاريخ الإصدار:</label><input type="date" id="cIssueDate" required></div>
-                <div class="form-group"><label>نهاية الصلاحية:</label><input type="date" id="cExpiryDate" required></div>
-                
+                <div class="form-group"><label>تاريخ الإصدار:</label><input type="text" id="cIssueDate" placeholder="1447/12/21" required></div>
+                <div class="form-group"><label>نهاية الصلاحية:</label><input type="text" id="cExpiryDate" placeholder="1448/12/21" required></div>
                 <div class="form-group full-width"><label>الاسم الكامل لطالب :</label><input type="text" id="cName" placeholder="MD IQBAL HOSSAIN" required></div>
-                <div class="form-group"><label>رقم الهوية للاب / الإقامة:</label><input type="text" id="cIdNo" placeholder="2500113531" required></div>
-                
-                <div class="form-group"><label>الجنس:</label>
-                    <select id="cGender" required>
-                        <option value="" disabled selected>اختر الجنس</option>
-                        <option value="ذكر">ذكر</option>
-                        <option value="أنثى">أنثى</option>
-                    </select>
-                </div>
-                
-                <div class="form-group"><label>الجنسية:</label>
-                    <select id="cNat" required>
-                        <option value="" disabled selected>اختر الجنسية</option>
-                        <option value="سعودي">سعودي</option>
-                        <option value="مصر">مصر</option>
-                        <option value="اليمن">اليمن</option>
-                        <option value="الإمارات">الإمارات</option>
-                        <option value="الكويت">الكويت</option>
-                        <option value="قطر">قطر</option>
-                        <option value="عُمان">عُمان</option>
-                        <option value="البحرين">البحرين</option>
-                        <option value="الأردن">الأردن</option>
-                        <option value="سوريا">سوريا</option>
-                        <option value="لبنان">لبنان</option>
-                        <option value="فلسطين">فلسطين</option>
-                        <option value="العراق">العراق</option>
-                        <option value="المغرب">المغرب</option>
-                        <option value="الجزائر">الجزائر</option>
-                        <option value="تونس">تونس</option>
-                        <option value="السودان">السودان</option>
-                        <option value="باكستان">باكستان</option>
-                        <option value="الهند">الهند</option>
-                        <option value="بنجلاديش">بنجلاديش</option>
-                    </select>
-                </div>
-                
-                <div class="form-group"><label>المهنة الاب :</label><input type="text" id="cJob" placeholder="مدير " required></div>
-                <div class="form-group"><label>البرنامج المدرسي :</label><input type="text" id="cProg" placeholder="منشآت مدرسية " required></div>
-                
-                <div class="form-group"><label>تاريخ انتهاء البرنامج:</label><input type="date" id="cProgExp" required></div>
-                
-                <div class="form-group full-width"><label>اسم المدرسة :</label><input type="text" id="cFacName" placeholder=" " required></div>
-                <div class="form-group full-width"><label>رقم رخصة المدرسة :</label><input type="text" id="cFacLic" placeholder="43058039930" required></div>
+                <div class="form-group"><label>رقم الهوية  / :</label><input type="text" id="cIdNo" placeholder="2500113531" required></div>
+                <div class="form-group"><label>الجنس:</label><input type="text" id="cGender" placeholder="ذكر" required></div>
+                <div class="form-group"><label>الجنسية:</label><input type="text" id="cNat" placeholder="يمني " required></div>
+                <div class="form-group"><label>المهنة  :</label><input type="text" id="cJob" placeholder="عامل " required></div>
+                <div class="form-group"><label>البرنامج التثقيفي  :</label><input type="text" id="cProg" placeholder="اسم المنشاة   " required></div>
+                <div class="form-group"><label>تاريخ انتهاء البرنامج  :</label><input type="text" id="cProgExp" placeholder="1450/12/28" required></div>
+                <div class="form-group full-width"><label>اسم المنشاة  :</label><input type="text" id="cFacName" placeholder=" " required></div>
+                <div class="form-group full-width"><label>رقم رخصة المنشاة  :</label><input type="text" id="cFacLic" placeholder="43058039930" required></div>
             </div>
             <button type="submit" class="btn-submit">توليد ومعاينة الشهادة</button>
         </form>
@@ -141,7 +104,7 @@
         <div class="card-page" id="page1">
             <div class="header-image-container"><img id="outHeaderImg1" class="header-uploaded-img" src=""></div>
             <div class="images-section"><div id="outQrImg" class="qr-photo"></div><img id="outUserImg1" class="user-photo"></div>
-            <div class="title-badge">شهادة مدرسية</div>
+            <div class="title-badge">شهادة صحية </div>
             <table class="info-table">
                 <tr><td class="label-cell">رقم الشهادة</td><td class="colon-cell">:</td><td class="value-cell" id="lCertNo"></td></tr>
                 <tr><td class="label-cell">مكان الإصدار</td><td class="colon-cell">:</td><td class="value-cell" id="lCertPlace"></td></tr>
@@ -156,34 +119,36 @@
 
         <div class="card-page back-page" id="page2">
             <ul class="terms-list">
-                <li><h2>االالتزام بالحضور في الوقت المحدد وبدء اليوم الدراسي.</h2></li>
-                <li><h2>التزام بالزي المدرسي الموحد، الحضور قبل بدء الطابور الصباحي، والمحافظة على نظافة المدرسة وممتلكاتها. كما تتضمن احترام المعلمين، عدم استخدام الهواتف المحمولة داخل الفصول، واتباع قواعد السلوك والانضباط لضمان بيئة تعليمية آمنة</h2></li>
-                <li><h2>عدم الخروج من المدرسة أو الفصول إلا بإذن رسمي من الإدارة أو المعلم.</h2></li>
+                <li><h2>حامل هذه الشهادة حاصل على تقرير طبي يثبت خلوه من الأمراض المعدية وأجريت له التطعيمات التي تخوله للعمل في محلات الأغذية والصحة العامة</h2></li>
+                <li><h2>تشغيل عمال ليس لديهم شهادات صحية أو لديهم شهادات صحية منتهية يعاقب عليها النظام بغرامة مالية عن كل عامل</h2></li>
+                <li><h2>تجديد هذه الشهادة قبل انتهائها بثلاثين يوماً</h2></li>
+                <li><h2>لا تعتبر هذه الشهادة إثباتاً هوياً لحامليها</h2></li>
+                <li><h2>للتأكد من سلامة الشهادة يرجى زيارة موقع أمانة منطقة الرياض</h2></li>
             </ul>
         </div>
 
         <div class="card-page third-page-balady" id="page3">
             <div class="header-image-container"><img id="outHeaderImg3" class="header-uploaded-img" src=""></div>
             <div class="balady-avatar-center-wrapper"><div class="balady-avatar-center"><img id="outUserImg3" src=""></div></div>
-            <div class="balady-green-title">شهادة مدرسية </div>
+            <div class="balady-green-title">شهادة صحية  </div>
             <div class="balady-main-card">
-                <div class="balady-group-label">بيانات الشهادة المدرسية :</div>
+                <div class="balady-group-label">بيانات الشهادة  :</div>
                 <div class="balady-row"><span class="balady-item-name">رقم الشهادة</span><span class="balady-item-value" id="vCertNo"></span></div>
                 <div class="balady-row"><span class="balady-item-name">تاريخ الإصدار</span><span class="balady-item-value" id="vIssueDate"></span></div>
                 <div class="balady-row"><span class="balady-item-name">نهاية الصلاحية</span><span class="balady-item-value" id="vExpiryDate"></span></div>
                 <div class="balady-separator"></div>
-                <div class="balady-group-label">بيانات صاحب الشهادةالمدرسية :</div>
+                <div class="balady-group-label">بيانات صاحب الشهادة :</div>
                 <div class="balady-row"><span class="balady-item-name">الاسم</span><span class="balady-item-value" id="vName"></span></div>
-                <div class="balady-row"><span class="balady-item-name">رقم الهوية الاب</span><span class="balady-item-value" id="vIdNo"></span></div>
+                <div class="balady-row"><span class="balady-item-name">رقم الهوية </span><span class="balady-item-value" id="vIdNo"></span></div>
                 <div class="balady-row"><span class="balady-item-name">الجنس</span><span class="balady-item-value" id="vGender"></span></div>
                 <div class="balady-row"><span class="balady-item-name">الجنسية</span><span class="balady-item-value" id="vNat"></span></div>
                 <div class="balady-row"><span class="balady-item-name">المهنة</span><span class="balady-item-value" id="vJob"></span></div>
-                <div class="balady-row"><span class="balady-item-name">البرنامج المدرسي </span><span class="balady-item-value" id="vProg"></span></div>
+                <div class="balady-row"><span class="balady-item-name">البرنامج التثقيفي  </span><span class="balady-item-value" id="vProg"></span></div>
                 <div class="balady-row"><span class="balady-item-name">تاريخ انتهاء البرنامج</span><span class="balady-item-value" id="vProgExp"></span></div>
                 <div class="balady-separator"></div>
-                <div class="balady-group-label">بيانات المدرسة :</div>
-                <div class="balady-row"><span class="balady-item-name">اسم المدرسة </span><span class="balady-item-value" id="vFacName"></span></div>
-                <div class="balady-row"><span class="balady-item-name">رقم رخصة المدرسة </span><span class="balady-item-value" id="vFacLic"></span></div>
+                <div class="balady-group-label">بيانات المنشاة  :</div>
+                <div class="balady-row"><span class="balady-item-name">اسم المنشاة  </span><span class="balady-item-value" id="vFacName"></span></div>
+                <div class="balady-row"><span class="balady-item-name">رقم رخصة المنشاة  </span><span class="balady-item-value" id="vFacLic"></span></div>
             </div>
         </div>
     </div>
@@ -193,34 +158,56 @@
     </div>
 
     <script>
+        // دالة لاستخراج متغيرات الرابط (URL Parameters)
         function getUrlParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param) || "";
         }
 
+        // محاكاة قاعدة البيانات المحلية سحابياً باستخدام الـ LocalStorage للحفظ والاستعلام
+        function getCertificateFromDB(certNo) {
+            const db = JSON.parse(localStorage.getItem('certificates_db') || '{}');
+            return db[certNo] || null;
+        }
+
+        function saveCertificateToDB(certNo, data) {
+            const db = JSON.parse(localStorage.getItem('certificates_db') || '{}');
+            db[certNo] = data;
+            localStorage.setItem('certificates_db', JSON.stringify(db));
+        }
+
+        // التعامل مع رابط الـ QR عند فتحه وفك التشفير وعرض البيانات
         window.addEventListener('DOMContentLoaded', () => {
-            if (getUrlParam('view') === 'page3') {
+            const targetCertNo = getUrlParam('query_id');
+            if (targetCertNo) {
                 document.getElementById('inputFormContainer').style.display = 'none';
                 document.getElementById('previewWrapper').style.display = 'block';
                 document.getElementById('page1').style.display = 'none';
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
 
-                document.getElementById('vCertNo').innerText = getUrlParam('cNo');
-                document.getElementById('vIssueDate').innerText = getUrlParam('cIssueDate');
-                document.getElementById('vExpiryDate').innerText = getUrlParam('cExpiryDate');
-                document.getElementById('vName').innerText = getUrlParam('cName');
-                document.getElementById('vIdNo').innerText = getUrlParam('cIdNo');
-                document.getElementById('vGender').innerText = getUrlParam('cGender');
-                document.getElementById('vNat').innerText = getUrlParam('cNat');
-                document.getElementById('vJob').innerText = getUrlParam('cJob');
-                document.getElementById('vProg').innerText = getUrlParam('cProg');
-                document.getElementById('vProgExp').innerText = getUrlParam('cProgExp');
-                document.getElementById('vFacName').innerText = getUrlParam('cFacName');
-                document.getElementById('vFacLic').innerText = getUrlParam('cFacLic');
+                // جلب البيانات من قاعدة البيانات بناءً على الرقم المستعلم عنه
+                const certData = getCertificateFromDB(targetCertNo);
 
-                if(getUrlParam('hImg')) document.getElementById('outHeaderImg3').src = getUrlParam('hImg');
-                if(getUrlParam('uImg')) document.getElementById('outUserImg3').src = getUrlParam('uImg');
+                if (certData) {
+                    document.getElementById('vCertNo').innerText = certData.cNo;
+                    document.getElementById('vIssueDate').innerText = certData.cIssueDate;
+                    document.getElementById('vExpiryDate').innerText = certData.cExpiryDate;
+                    document.getElementById('vName').innerText = certData.cName;
+                    document.getElementById('vIdNo').innerText = certData.cIdNo;
+                    document.getElementById('vGender').innerText = certData.cGender;
+                    document.getElementById('vNat').innerText = certData.cNat;
+                    document.getElementById('vJob').innerText = certData.cJob;
+                    document.getElementById('vProg').innerText = certData.cProg;
+                    document.getElementById('vProgExp').innerText = certData.cProgExp;
+                    document.getElementById('vFacName').innerText = certData.cFacName;
+                    document.getElementById('vFacLic').innerText = certData.cFacLic;
+
+                    if(certData.hImg) document.getElementById('outHeaderImg3').src = certData.hImg;
+                    if(certData.uImg) document.getElementById('outUserImg3').src = certData.uImg;
+                } else {
+                    alert('عذراً، لم يتم العثور على بيانات لهذه الشهادة في النظام.');
+                }
             }
         });
 
@@ -241,6 +228,7 @@
             const cFacName = document.getElementById('cFacName').value;
             const cFacLic = document.getElementById('cFacLic').value;
 
+            // تحديث واجهة العرض المحلية (Preview)
             document.getElementById('lCertNo').innerText = cNo;
             document.getElementById('lCertPlace').innerText = cPlace;
             document.getElementById('lExpiryDate').innerText = cExpiryDate;
@@ -263,6 +251,7 @@
             document.getElementById('vFacName').innerText = cFacName;
             document.getElementById('vFacLic').innerText = cFacLic;
 
+            // تجهيز وقراءة الصور أولاً
             const mapping = [
                 { input: 'inHeaderImg', view1: 'outHeaderImg1', view3: 'outHeaderImg3' },
                 { input: 'inUserImg', view1: 'outUserImg1', view3: 'outUserImg3' }
@@ -285,32 +274,23 @@
 
                         loadedCount++;
                         if(loadedCount === 2) {
-                            document.getElementById("outQrImg").innerHTML = "";
-                            
-                            const params = new URLSearchParams({
-                                view: 'page3',
-                                cNo: cNo,
-                                cPlace: cPlace,
-                                cExpiryDate: cExpiryDate,
-                                cName: cName,
-                                cIdNo: cIdNo,
-                                cGender: cGender,
-                                cNat: cNat,
-                                cJob: cJob,
-                                cIssueDate: cIssueDate,
-                                cProg: cProg,
-                                cProgExp: cProgExp,
-                                cFacName: cFacName,
-                                cFacLic: cFacLic
+                            // حفظ البيانات كاملة داخل قاعدة البيانات مع كود الصور المضغوطة
+                            saveCertificateToDB(cNo, {
+                                cNo, cPlace, cExpiryDate, cName, cIdNo, cGender, cNat, cJob, cIssueDate, cProg, cProgExp, cFacName, cFacLic,
+                                hImg: headerBase64,
+                                uImg: userBase64
                             });
 
-                            const liveTrackingUrl = window.location.origin + window.location.pathname + "?" + params.toString();
+                            document.getElementById("outQrImg").innerHTML = "";
+                            
+                            // توليد رابط ميت خفيف جداً يرسل رقم الشهادة فقط للاستعلام عنها
+                            const liveTrackingUrl = window.location.origin + window.location.pathname + "?query_id=" + encodeURIComponent(cNo);
                             
                             new QRCode(document.getElementById("outQrImg"), { 
                                 text: liveTrackingUrl, 
                                 width: 115, 
                                 height: 115, 
-                                correctLevel: QRCode.CorrectLevel.L
+                                correctLevel: QRCode.CorrectLevel.M
                             });
 
                             document.getElementById('inputFormContainer').style.display = 'none';
@@ -343,7 +323,7 @@
                 const c3 = await html2canvas(p3, opts); pdf.addImage(c3.toDataURL('image/png'), 'PNG', 0, 0, 116, 166);
                 pdf.save('Balady_Final_Form_' + filename + '.pdf');
 
-                if (window.location.href.includes('view=page3')) {
+                if (window.location.href.includes('query_id=')) {
                     p1.style.display = 'none'; p2.style.display = 'none';
                 } else {
                     p3.style.display = 'none';
